@@ -1,6 +1,6 @@
 // common js will goes here that are applicable for entire application
 //const server_url = "http://localhost:9001/";
-const server_url = "https://ecommerce.gigantoo.com/";
+const server_url = "https://ecommerce.gigantoo.com";
 
 //coman element
 let signupChange = document.getElementById("signup");

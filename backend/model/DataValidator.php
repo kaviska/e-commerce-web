@@ -160,6 +160,26 @@ final class DataValidator
         }
     }
 
+    //mobile number validator as integer
+    private function mobile_number_validator(...$dataToValidate)
+    {
+        $key = $dataToValidate[0];
+        $value = $dataToValidate[1];
+
+        // Remove leading/trailing white spaces
+        $mobileNumber = trim($value);
+
+        // Check if the text is empty
+        if (empty($mobileNumber)) {
+            $this->errorObject->$key =  "Empty mobile number for " . $key; // Text is empty
+        }
+
+        // Validate mobile number format (assuming a 10-digit number for this example)
+        if (!preg_match('/^\d{10}$/', $mobileNumber)) {
+            $this->errorObject->$key =  "Invalid Mobile Number for " . $key;
+        }
+    }
+
     // id validator as integer
     private function email_validator(...$dataToValidate)
     {

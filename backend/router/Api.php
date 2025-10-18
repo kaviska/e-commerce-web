@@ -13,17 +13,24 @@
 //packages
 require_once(__DIR__ . "/Controller.php");
 require_once(__DIR__ . "/../model/DataValidator.php");
+require_once __DIR__ . '/../model/CrudOperator.php';
 
 /**
  * @author : Madusha Pravinda
  */
 class Api extends Controller
 {
+
+
        protected $apiPath = null;
+       protected $crudOperator;
+
+
        public function __construct($apiPath)
        {
               parent::__construct();
               $this->apiPath = $apiPath;
+              $this->crudOperator = new CrudOperator($this->databaseDriver);
        }
 
        //api init
@@ -33,7 +40,12 @@ class Api extends Controller
               $callBackMethod = array($object, $process);
               if (is_callable($callBackMethod)) {
                      $response = call_user_func($callBackMethod, $this->apiPath);
-                     $this->sendJson($response);
+                     global $IS_RESPONSE_TEXT;
+                     if (true === $IS_RESPONSE_TEXT) {
+                            $this->sendText($response);
+                     } else {
+                            $this->sendJson($response);
+                     }
               } else {
                      $this->sendJson(API_404_MESSAGE);
               }

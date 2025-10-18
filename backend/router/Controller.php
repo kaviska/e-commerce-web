@@ -32,5 +32,12 @@ class Controller
               $this->sessionManager = new SessionManager();
        }
 
-
+       /**
+        * set the response type to text
+        */
+       public static function setResponseToText()
+       {
+              global $IS_RESPONSE_TEXT;
+              $IS_RESPONSE_TEXT = true;
+       }
 }

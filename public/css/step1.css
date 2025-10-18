@@ -1,0 +1,256 @@
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.bill-section {
+  background-color: rgba(0, 157, 222, 0.12);
+}
+.step-number {
+  border: 1px solid var(--yellow);
+  color: var(--yellow);
+  font-weight: var(--bold-medium);
+
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2em;
+  height: 2em;
+}
+table {
+  font-size: 12px;
+  border-collapse: separate; /* Ensure borders are not collapsed */
+  border-spacing: 5px; /* Set the spacing between cells */
+}
+tr {
+  margin-bottom: 160px; /* Set margin between table rows */
+}
+.card {
+  width:370px;
+  border-radius: 0px;
+  padding: 18px;
+  border: 1px solid gray;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.card-two {
+  border-radius: 0px;
+  width: 370px;
+  height: 85%;
+  padding: 18px;
+  border: 1px solid gray;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: 16px;
+}
+.heading-up{
+  margin-top:-10%
+}
+.heading-ups{
+  margin-top:-10%
+}
+.p-btn {
+  background-color: var(--yellow);
+
+  padding: 10px;
+  width: 200px;
+  cursor: pointer;
+}
+.tick-two {
+  margin-top: 10px;
+  margin-left: 10px;
+  width: 25px; /* Optional: control the width */
+  height: 25px; /* Optional: control the height */
+  transform: scale(1.5); /* Scale the checkbox */
+}
+.tick-two:checked {
+  background-color: #00a9ec;
+  border: 1px solid #00a9ec;
+}
+.custom-select {
+  width: 120px;
+  border-radius: 6px;
+}
+.book-btn {
+  border: 1px solid var(--yellow);
+  border-radius: 3px;
+  width: 130px;
+  height: auto;
+}
+.more-info-btn {
+  border-radius: 3px;
+  width: 130px;
+  height: auto;
+  border: 1px solid var(--yellow);
+}
+.more-info-btns {
+  border-radius: 3px;
+  width: 130px;
+  height: auto;
+  border: 1px solid var(--yellow);
+}
+.book-btn:hover {
+  background-color: #00a9ec;
+  color: white;
+}
+.price {
+  color: #46266a;
+}
+
+.book-btn {
+  border: 1px solid var(--yellow);
+  border-radius: 3px;
+}
+.more-info-btn:hover {
+  background-color: #00478f;
+  color: #f1f2f6;
+}
+.more-info-btns:hover {
+  background-color: #00478f;
+  color: #f1f2f6;
+}
+
+
+.ul li {
+  padding-left: 10px;
+  list-style-type: disc; /* Set the list item marker type to disc */
+  color: black; /* Set the text color to black */
+}
+
+.ul li::marker {
+  color: var(--yellow);
+}
+
+.info-btn {
+  border: 1px solid var(--yellow);
+  padding: 5px 5px 5px 5px;
+  color: var(--yellow);
+}
+input[type="date"] {
+  color: #333; /* Text color */
+  background-color: #fff; /* Background color */
+  border: 1px solid #ccc; /* Border */
+  padding: 8px 12px; /* Padding */
+  border-radius: 4px; /* Border radius */
+  font-size: 14px;
+  width: 230px;
+}
+
+input[type="time"] {
+  color: #333; /* Text color */
+  background-color: #fff; /* Background color */
+  border: 1px solid #ccc; /* Border */
+  padding: 8px 12px; /* Padding */
+  border-radius: 4px; /* Border radius */
+  font-size: 14px;
+  width: 230px;
+}
+.park-btn {
+  background-color: #0930de;
+  border-radius: 5px;
+  min-width: 140px;
+}
+.park-btn:hover {
+  background-color: #333;
+}
+.close-btn {
+  background-color: var(--yellow);
+
+  padding: 10px;
+  cursor: pointer;
+}
+.adjust-btn {
+  width: 20px;
+}
+@media screen and (min-width: 1070px) {
+}
+
+@media screen and (max-width: 1070px) and (min-width: 992px) {
+}
+@media screen and (max-width: 992px) and (min-width: 768px) {
+  .card {
+    width: 50%;
+  }
+  .book-btn {
+    border: 1px solid var(--yellow);
+    border-radius: 3px;
+    min-width: 120px;
+    height: 40px;
+  }
+  .more-info-btn {
+    border-radius: 3px;
+    min-width: 120px;
+    height: 40px;
+  border: 1px solid var(--yellow);
+
+  }
+  .more-info-btns {
+    border-radius: 3px;
+    min-width: 120px;
+    height: 40px;
+  border: 1px solid var(--yellow);
+
+  }
+}
+@media screen and (max-width: 768px) and (min-width: 575px) {
+  .card {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .card {
+    width: 250px;
+    padding: 10px;
+  }
+  .book-btn {
+    border: 1px solid var(--yellow);
+    border-radius: 3px;
+    min-width: 90px;
+    height: 40px;
+  }
+  .more-info-btn {
+    border-radius: 3px;
+    min-width: 90px;
+    height: 40px;
+  border: 1px solid var(--yellow);
+
+  }
+  
+  .more-info-btns {
+    border-radius: 3px;
+    min-width: 90px;
+    height: 40px;
+  border: 1px solid var(--yellow);
+
+  }
+  table {
+    margin-left: 50px;
+  }
+  tr {
+    margin-top: 350px;
+  }
+  .card-two {
+    border-radius: 0px;
+    width: 98%;
+    height: 85%;
+    padding: 10px;
+    border: 1px solid gray;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 16px;
+  }
+  .custom-select {
+    width: 150px;
+    border-radius: 6px;
+  }
+  .ul {
+    width: auto;
+  }
+  .heading-up{
+    margin-top:-14%;
+  }
+  .heading-ups{
+    margin-top:-14%;
+    margin-left: 20px;
+  }
+}

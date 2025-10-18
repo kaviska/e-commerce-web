@@ -1,0 +1,99 @@
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.bill-section {
+  background-color: rgba(0, 157, 222, 0.12);
+}
+.step-number {
+  border: 1px solid var(--yellow);
+  color: var(--yellow);
+  font-weight: var(--bold-medium);
+
+  border-radius: 50%;
+
+  
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2em; 
+  height: 2em;
+}
+.details-section {
+  background-color: #f8f8f8;
+  border-radius: 8px;
+}
+
+.conform-btn {
+  background-color: black;
+  color: white;
+  width: 100%;
+  border-radius: 0px;
+}
+.billing-details {
+  background: rgba(224, 243, 251, 1);
+}
+table {
+  font-size: 12px;
+  border-collapse: separate; /* Ensure borders are not collapsed */
+  border-spacing: 5px; /* Set the spacing between cells */
+}
+tr {
+  margin-bottom: 160px; /* Set margin between table rows */
+}
+hr {
+  border: 0;
+  height: 1px;
+  background-color: white;
+}
+.star-icon {
+  font-size: 7px;
+  margin-left: 1px;
+}
+.fixed-section {
+  position: fixed;
+  top: 0%; /* Adjust as needed */
+  right: 23px;
+  z-index: 999; /* Ensure it's above other content */
+  margin-top: 120px;
+}
+.final-edit {
+  border: 1px solid var(--yellow);
+  background: rgba(224, 243, 251, 1);
+  min-width: 60px;
+}
+.checkOut-btn {
+  border: none;
+  background-color: var(--yellow);
+  width: 100%;
+}
+.checkOut-btn:hover {
+ 
+  background-color: #00a9ec;
+}
+.conform-btn:hover{
+  background-color: #000;
+  color: white;
+}
+@media screen and (min-width: 1070px) {
+}
+
+@media screen and (max-width: 1070px) and (min-width: 992px) {
+}
+@media screen and (max-width: 992px) and (min-width: 768px) {
+}
+@media screen and (max-width: 758px) and (min-width: 575px) {
+  .fixed-section {
+    position: static;
+    margin-top: 0px;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .fixed-section {
+    position: static;
+    margin-top: 0px;
+  }
+}

@@ -21,17 +21,32 @@ class View
        protected $viewDir = __DIR__ . '/../../public/view/interface/';
        protected $componentDir = __DIR__ . '/../../public/view/component/';
 
-       public function __construct($URL)
+       public function __construct($URL, $isComponent = false)
        {
-              $this->navigator($URL);
+              $this->navigator($URL, $isComponent);
        }
+
        /**
         * Navigate to the specified URL
         * @param string : $URL
         * @author: madusha pravinda
         */
-       public function navigator($URL)
+       public function navigator($URL, $isComponent)
        {
+
+              if ($isComponent) {
+                     $comp = explode("/", $URL)[1] ?? null;
+                     if ($comp) {
+                            $component = $this->loadComponent($comp);
+                            if ($component) {
+                                   $this->loadContent('404', "page not found", [], []);
+                            }
+                     } else {
+                            $this->loadContent('404', "page not found", [], []);
+                     }
+                     return;
+              }
+
               foreach (ROUTES as $routes) {
                      foreach ($routes["routes"] as $route) {
                             if ($route === $URL) {
@@ -61,6 +76,22 @@ class View
               $this->loadHeader($isCustom);
               require_once $this->viewDir . $fileName . ".php";
               $this->loadFooter($isCustom);
+       }
+
+
+       /**
+        * load a compoentn design content 
+        *
+        * @param string $component component name
+        *
+        */
+       public function loadComponent($component)
+       {
+              try {
+                     return file_get_contents(__DIR__ . "/../../public/view/component/custom/$component.comp.php");
+              } catch (\Throwable $th) {
+                     return null;
+              }
        }
 
        // page header handling

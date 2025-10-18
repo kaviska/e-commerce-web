@@ -36,6 +36,9 @@ class Router
               if ($this->urlPaths[0] === 'api') {
                      array_shift($this->urlPaths);
                      $this->callApi($this->urlPaths);
+              } else if ($this->urlPaths[0] === 'comp') {
+                     array_shift($this->urlPaths);
+                     $this->loadComp($this->URL);
               } else {
                      $this->loadView($this->URL);
               }
@@ -68,5 +71,15 @@ class Router
        {
               //initialize View class and pass the URL to View constructor
               new View($URL);
+       }
+
+       /**
+        * load components
+        * @param string $URL
+        */
+       public function loadComp(string $URL)
+       {
+              //initialize View class and pass the URL to View constructor
+              new View($URL, true);
        }
 }

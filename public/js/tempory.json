@@ -1,0 +1,33 @@
+{
+    "parking_id": "AFJBse9oAPwY",
+    "arrival": "2024-04-14 12:48:00",
+    "exitDetails": "2024-04-22 13:48:00",
+    "parking_status_status_id": 2,
+    "package_package_id": "knJ8Ur0N5h7g",
+    "travel_travel_id": "wvROqupGoYlB",
+    "payment_id": null,==
+    "user_user_id": "6616e71854db",
+    "full_amount": "1930",==
+    "date_time": null,==
+    "travel_id": "wvROqupGoYlB",
+    "registation_number": "490",
+    "flight_number": null,
+    "airline_airline_id": 1,==
+    "reason_reason_id": 1,==
+    "package_id": "knJ8Ur0N5h7g",
+    "name": "basic",
+    "hour_price": 10,
+    "walking_time": "1-4",
+    "bottom_text": "this is the bottom text for the basic package",
+    "more_info": "no more info for this package",
+    "point_form": "\"this is the first bullet point\\r\\nthis is the second bullet point\\r\\nthis is the third bullet point\\r\\nthis is the last ballet point\"",
+    "user_id": "6616e71854db",
+    "email": "kaviska525@gmail.com",
+    "hash": "45a0931aea8b649a29d822252b79b5abb21934070dbbaf6f236ed6ff70c9df6f",
+    "first_name": "Kiona Love",
+    "last_name": "Casey",
+    "telephone": "+1 (446) 302-1296",
+    "postal_code": "Eaque velit occaeca",
+    "title_title_id": 1,
+    "user_status_status_id": 1
+}

@@ -1,0 +1,51 @@
+h1 {
+    color: #88B04B;
+   
+    font-weight: 900;
+    font-size: 40px;
+    margin-bottom: 10px;
+  }
+  p {
+   
+    font-size:20px;
+    margin: 0;
+  }
+i {
+  color: #039DDC;
+  font-size: 100px;
+  line-height: 200px;
+  margin-left:-15px;
+}
+.step-number {
+  border: 1px solid var(--yellow);
+  color: var(--yellow);
+  font-weight: var(--bold-medium);
+
+  border-radius: 50%;
+
+  
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2em; 
+  height: 2em;
+ }
+@media screen and (min-width: 1070px) {
+}
+
+@media screen and (max-width: 1070px) and (min-width: 992px) {
+  
+ 
+}
+@media screen and (max-width: 992px) and (min-width: 768px) {
+ 
+  
+}
+@media screen and (max-width: 758px) and (min-width: 575px) {
+  
+}
+
+@media screen and (max-width: 575px) {
+  
+}

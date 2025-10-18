@@ -1,0 +1,217 @@
+.banner-section {
+  border: 1px solid black;
+  position: relative;
+}
+.select-menu {
+  width: 300px;
+}
+.add-btn {
+  background-color: black;
+  color: white;
+  width: 360px;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.bill-section {
+  background-color: rgba(0, 157, 222, 0.12);
+}
+
+table {
+  font-size: 12px;
+  border-collapse: separate; /* Ensure borders are not collapsed */
+  border-spacing: 5px; /* Set the spacing between cells */
+}
+tr {
+  margin-bottom: 160px; /* Set margin between table rows */
+  width: 22px;
+
+}
+
+.banner-text {
+  position: absolute;
+}
+.arrow-icon {
+  width: 4%;
+}
+.book-btn {
+  background-color: #46266a;
+}
+.price {
+  color: #46266a;
+}
+input[type="date"] {
+  color: #333; /* Text color */
+  background-color: #fff; /* Background color */
+  border: 1px solid #ccc; /* Border */
+  padding: 8px 12px; /* Padding */
+  border-radius: 4px; /* Border radius */
+  font-size: 14px;
+  width: 230px;
+}
+
+input[type="time"] {
+  color: #333; /* Text color */
+  background-color: #fff; /* Background color */
+  border: 1px solid #ccc; /* Border */
+  padding: 8px 12px; /* Padding */
+  border-radius: 4px; /* Border radius */
+  font-size: 14px;
+  width: 230px;
+}
+.park-btn {
+  background-color: #0930de;
+  border-radius: 5px;
+min-width: 140px;
+}
+.park-btn:hover {
+  background-color: #333;
+}
+.close-btn {
+  background-color: var(--yellow);
+
+  padding: 10px;
+  cursor: pointer;
+}
+.p-btn {
+  background-color: var(--yellow);
+
+  padding: 10px;
+  width: 200px;
+  cursor: pointer;
+}
+.cancel{
+  border: none;
+  padding: 8px;
+}
+.cancel:hover{
+  background-color: gainsboro;
+}
+.image {
+  position: relative;
+}
+.text-content {
+  position: absolute;
+  top: 20px;
+  left: 40px;
+  width: 100%;
+}
+.step-number {
+  border: 1px solid var(--yellow);
+  color: var(--yellow);
+  font-weight: var(--bold-medium);
+
+  border-radius: 50%;
+
+  
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2em; 
+  height: 2em;
+ 
+ 
+  
+ 
+  
+}
+
+.valet-add-left {
+  border-radius: 3px;
+  border: none;
+}
+select {
+  width: 160px;
+
+  border-radius: 10px;
+}
+.step-2-img {
+  min-height: 180px;
+}
+.step-2left {
+  box-shadow: 0px 2px 11.7px 0px rgba(0, 0, 0, 0.07);
+}
+@media screen and (min-width: 1070px) {
+}
+
+@media screen and (max-width: 1070px) and (min-width: 1050px) {
+}
+@media screen and (max-width: 1050px) and (min-width: 992px) {
+  .select-menu {
+    width: 55%;
+  }
+  .add-btn {
+    background-color: black;
+    color: white;
+    width: 100%;
+  }
+}
+@media screen and (max-width: 992px) and (min-width: 768px) {
+  .banner-section {
+    border: none;
+  }
+  .image {
+    position: relative;
+  }
+  .text-content {
+    position: absolute;
+    top: 20px;
+    left: 170px;
+    width: 100%;
+  }
+  select {
+    width: 300px;
+
+    border-radius: 10px;
+  }
+  .close-btn{
+    background-color: var(--yellow);
+width: 806px;
+    padding: 10px;
+    cursor: pointer;  }
+}
+@media screen and (max-width: 758px) and (min-width: 575px) {
+  .banner-section {
+    border: none;
+  }
+  select {
+    width: 200px;
+
+    border-radius: 10px;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .banner-section {
+    border: none;
+  }
+  .select-menu {
+    width: 55%;
+  }
+  .add-btn {
+    background-color: black;
+    color: white;
+    width: 80%;
+  }
+  .step-2-img {
+    width: 300px;
+  }
+  select {
+    max-width: 100%;
+
+    border-radius: 10px;
+  }
+  
+  tr{
+    width: 30px;
+  }
+  table{
+    margin-left: 50px;
+  }
+  .step-2left {
+    box-shadow: none;
+  }
+}

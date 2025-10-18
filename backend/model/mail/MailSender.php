@@ -20,8 +20,8 @@ final class MailSender
 
     public function __construct($toAddress)
     {
-        $this->senderMail = 'trackaaofficial@gmail.com';
-        $this->password = 'gijtkbbqyrnxnwzr';
+        $this->senderMail = 'webkd20@gmail.com';
+        $this->password = 'osfwecwvfmsgqwcj';
         $this->toAddress = $toAddress;
     }
 

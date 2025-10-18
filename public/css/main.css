@@ -1,22 +1,20 @@
-@font-face {
-  font-family: "Poppins";
-  src: url("/public/resources/fonts/Poppins-Black.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap");
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family: "Poppins", sans-serif;
 }
-
+body{
+  overflow-x: hidden;
+}
 :root {
   /* color */
   --darker: rgba(4, 4, 4, 1);
-  --dark: rgba(17, 16, 14, 1);
-  --orange: rgba(251, 135, 92, 1);
-  --light: rgba(255, 255, 255, 1);
+  --dark: #f1f2f6;
+  --yellow: #009dde;
+  --light: #ccebf8;
 
   /* transistion */
   --transition1: 200ms;
@@ -24,22 +22,22 @@
   --transition3: 600ms;
 
   /* font */
-  --font-h1-lg: 40px;
-  --font-h1-md: 30px;
+  --font-h1-lg: 27px;
+  --font-h1-md: 25px;
   --font-h1: 22px;
 
   --font-h2-lg: 22px;
-  --font-h2-md: 15px;
-  --font-h2: 13px;
+  --font-h2-md: 17px;
+  --font-h2: 17px;
 
-  --font-h3-lg: 15px;
-  --font-h3-md: 12px;
-  --font-h3: 11px;
+  --font-h3-lg: 16px;
+  --font-h3-md: 14px;
+  --font-h3: 13px;
 
   --font-p-lg: 14px;
-  --font-p-mid: 11px;
-  --font-p-sm: 9px;
-  --font-p-xsm: 7px;
+  --font-p-mid: 14px;
+  --font-p-sm: 13px;
+  --font-p-xsm: 12px;
 
   /* radius */
   --rounded-large: 30px;
@@ -48,9 +46,9 @@
   --rounded-under: 0px 0px 7px 7px;
 
   /* font-weight */
-  --bolder: 900;
-  --bold: 700;
-  --medium: 500;
+  --bolder: 600;
+  --bold: 500;
+  --medium: 200;
 
   /* border */
 
@@ -92,8 +90,8 @@
   background-color: var(--dark);
 }
 
-.alg-bg-orange {
-  background-color: var(--orange);
+.alg-bg-yellow {
+  background-color: var(--yellow);
 }
 
 .alg-bg-light {
@@ -107,6 +105,9 @@
 
 .alg-text-light {
   color: var(--light);
+}
+.alg-text-yellow {
+  color: var(--yellow);
 }
 
 /* shadow */
@@ -156,6 +157,100 @@
   font-weight: var(--medium);
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+.logo {
+  max-width: 250px;
+}
+.logos {
+  max-width: 200px;
+}
+.sign-btn {
+  border: 1px solid black;
+}
+.booking-btn:hover {
+  background-color: #00a9ec;
+}
+.booking-btn {
+  border-radius: 0px;
+  width: 170px;
+  height: 80px;
+  border: none;
+  margin-left: -5px;
+}
+.sign-btn {
+  border-radius: 0px;
+  width: 170px;
+  height: 80px;
+  color: var(--yellow);
+
+  border: 1px solid var(--yellow);
+}
+.btn-col {
+  max-height: 10px;
+}
+.sign-btn:hover {
+  border: 1px solid var(--yellow);
+  background-color: #00478f;
+  color:  #f1f2f6
+  ;
+}
+.profie-btn {
+  border-radius: 0px;
+  width: 140px;
+  color: var(--yellow);
+  height: 80px;
+  border: 1px solid var(--yellow);
+}
+.profie-btn:hover {
+  border: 1px solid var(--yellow);
+  background-color: #00478f;
+  color:  #f1f2f6
+  ;
+}
+.booking-btn-sign {
+  border-radius: 0px;
+  width: 130px;
+  height: 80px;
+  border: none;
+  margin-left: -5px;
+}
+.booking-btn-sign:hover{
+  background-color: #00a9ec;
+}
+.sign-btn-step {
+  border-radius: 0px;
+  width: 140px;
+  height: 60px;
+  border: 1px solid var(--yellow);
+  background-color: var(--dark);
+}
+.sign-btn-step:hover {
+  border: 1px solid var(--yellow);
+  background-color: #00478f;
+  color:  #f1f2f6
+  ;
+}
+
+.booking-btn-step {
+  border-radius: 0px;
+  width: 130px;
+  height: 60px;
+  border: none;
+  margin-left: -15px;
+}
+.booking-btn-step:hover {
+  background-color: #00a9ec;
+}
+.step-number {
+  border: 1px solid var(--yellow);
+  color: var(--yellow);
+  font-weight: var(--bold-medium);
+
+  border-radius: 50%;
+}
 @media screen and (min-width: 1070px) {
   /* font size */
   .alg-text-p {
@@ -175,7 +270,7 @@
   }
 }
 
-@media screen and (max-width: 1070px) and (min-width: 575px) {
+@media screen and (max-width: 1070px) and (min-width: 768px) {
   /* font size */
   .alg-text-p {
     font-size: var(--font-p-mid);
@@ -191,6 +286,84 @@
 
   .alg-text-h3 {
     font-size: var(--font-h3-md);
+  }
+  .profie-btn {
+    border-radius: 0px;
+    width: 100px;
+    height: 80px;
+    border: 1px solid var(--yellow);
+  }
+  .booking-btn-sign {
+    border-radius: 0px;
+    width: 100px;
+    height: 80px;
+    border: none;
+    margin-left: -5px;
+  }
+  .logo {
+    max-width: 200px;
+  }
+  .booking-btn {
+    border-radius: 0px;
+    width: 150px;
+    height: 80px;
+    border: none;
+    margin-left: -5px;
+  }
+  .sign-btn {
+    border-radius: 0px;
+    width: 150px;
+    height: 80px;
+
+    border: 1px solid var(--yellow);
+  }
+}
+@media screen and (max-width: 768px) and (min-width: 550px) {
+  /* font size */
+  .alg-text-p {
+    font-size: var(--font-p-mid);
+  }
+
+  .alg-text-h1 {
+    font-size: var(--font-h1-md);
+  }
+
+  .alg-text-h2 {
+    font-size: var(--font-h2-md);
+  }
+
+  .alg-text-h3 {
+    font-size: var(--font-h3-md);
+  }
+  .booking-btn {
+    border-radius: 0px;
+    width: 120px;
+    height: 100px;
+    border: none;
+  }
+  .sign-btn {
+    border-radius: 0px;
+    width: 120px;
+    height: 100px;
+    border: 1px solid var(--yellow);
+  }
+  .profie-btn {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+    border: 1px solid var(--yellow);
+  }
+  .booking-btn-sign {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+    border: none;
+    margin-left: 0px;
+  }
+  .logo {
+    max-width: 200px;
   }
 }
 
@@ -216,4 +389,76 @@
   .alg-rounded-large {
     border-radius: var(--rounded-small);
   }
+  .booking-btn {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-left: 0px;
+
+    border: none;
+    font-size: 20px;
+  }
+  .sign-btn {
+    border-radius: 0px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    font-size: 20px;
+    border: 1px solid var(--yellow);
+  }
+  .booking-btn {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-left: 0px;
+
+    border: none;
+    font-size: 20px;
+  }
+  .sign-btn {
+    border-radius: 0px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    font-size: 20px;
+    border: 1px solid var(--yellow);
+  }
+  .profie-btn {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 14px;
+    border: 1px solid var(--yellow);
+  }
+  .booking-btn-sign {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 14px;
+    border: none;
+    margin-left: 0px;
+  }
+  .logo {
+    max-width: 180px;
+    margin-bottom: 20px;
+  }
+}
+
+/* For WebKit based browsers (e.g., Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 10px; /* width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* color of the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0930de; /* color of the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--yellow); /* color of the thumb on hover */
 }

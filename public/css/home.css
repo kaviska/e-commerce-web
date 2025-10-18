@@ -1,0 +1,183 @@
+/* custom CSS */
+.booking-section{
+  background-image: url('../resources/images/book form hero.jpg');
+  height: 100vh;
+ background-position: center;
+ background-size: cover; /* Cover the entire container */
+  background-repeat: no-repeat;
+}
+.booking-box{
+  margin-top: 600px;
+}
+.box{
+    width: 80%;
+    background-color: #F8F8F8;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+
+    margin-bottom: 60px;
+    border-radius: 8px;
+
+
+    
+
+}
+input[type="date"] {
+  color: #333; /* Text color */
+    background-color: #fff; /* Background color */
+    border: 1px solid #ccc; /* Border */
+    padding: 8px 12px; /* Padding */
+    border-radius: 4px; /* Border radius */
+    font-size: 14px;
+    width: 160px;
+  }
+
+  input[type="time"] {
+    color: #333; /* Text color */
+    background-color: #fff; /* Background color */
+    border: 1px solid #ccc; /* Border */
+    padding: 8px 12px; /* Padding */
+    border-radius: 4px; /* Border radius */
+    font-size: 14px;
+    width: 160px;
+
+
+  }
+.park-btn{
+  background-color: var(--yellow);
+  border-radius: 4px;
+  padding: 8px 16px 8px 16px;
+}
+  .park-btn:hover{
+    background-color:  #00a9ec
+    ;
+  }
+  
+
+
+  
+  @media screen and (min-width: 1070px) {
+  }
+  
+  @media screen and (max-width: 1070px) and (min-width: 992px) {.box{
+    width: 80%;
+    background-color: #F8F8F8;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    margin-bottom: 60px;
+
+    
+
+}
+    
+    
+   
+  }
+  @media screen and (max-width: 992px) and (min-width: 768px) {
+    input[type="date"]{
+      width: 220px;
+
+    }
+    input[type="time"]{
+      width: 220px;
+
+    }
+    .box{
+      width: 90%;
+      background-color: #F8F8F8;
+      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+      margin-bottom: 60px;
+  
+      
+  
+  }
+    
+   
+    
+  }
+  @media screen and (max-width: 758px) and (min-width: 575px) {
+    input[type="date"]{
+      width: 300px;
+
+    }
+    input[type="time"]{
+      width: 300px;
+
+    }
+    .park-btn{
+      width: 300px;
+    }
+    .box{
+      width: 80%;
+      background-color: #F8F8F8;
+      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+      margin-bottom: 60px;
+  
+      
+  
+  }
+    
+  }
+
+  @media screen and (max-width: 575px) and (min-width: 457px) {
+    input[type="date"]{
+      width: 100%;
+
+    }
+    input[type="time"]{
+      width: 100%;
+
+    }
+    .park-btn{
+      width: 100%;
+    }
+    .box{
+      width: 100%;
+      background-color: #F8F8F8;
+      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+      margin-bottom: 60px;
+  
+      
+  
+  }
+    
+  }
+  
+  @media screen and (max-width: 457px) {
+    input[type="date"]{
+      width: 100%;
+
+    }
+    input[type="time"]{
+      width: 100%;
+
+    }
+    
+    .box{
+      width: 100%;
+      background-color: #F8F8F8;
+      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    
+      margin-bottom: 60px;
+  
+      
+  
+  }
+ 
+  }
+  
+  .product-booking-section {
+  background: linear-gradient(180deg, #f9f9f9 0%, #ffffff 100%);
+}
+
+.btn-warning:hover {
+  background-color: #e0a800 !important;
+  color: #fff;
+}
+
+input[type="date"], input[type="time"], select {
+  border-radius: 8px;
+  padding: 10px;
+}
+
+hr {
+  border-radius: 2px;
+}

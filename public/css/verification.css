@@ -1,0 +1,20 @@
+.custom-h1 {
+
+  font-weight: 900;
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+.custom-p {
+  font-size: 20px;
+  margin: 0;
+}
+.right-icon {
+  color: #039ddc;
+  font-size: 100px;
+  line-height: 200px;
+  margin-left: -15px;
+}
+.arrow-icon{
+    font-size: 20px;
+    margin-right: 20px;
+}

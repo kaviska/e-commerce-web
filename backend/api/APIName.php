@@ -19,10 +19,13 @@ class APIName extends Api
        //data method
        protected function processname()
        {
-              if (!self::isGetMethod()) {
-                     return (INVALID_REQUEST_METHOD);
-              }
-              return "testing mode on";
+              //if (!self::isGetMethod()) {
+              //       return (INVALID_REQUEST_METHOD);
+              //}
+              //return self::response(1, "testing mode on"); // json response
+//
+              //self::setResponseToText(); // text response
+              //return "testing mode on";
 
               //Example Usage of methods
               // $userId = $_GET['user_id'] ?? null; // getting query parameters from requests
@@ -35,5 +38,10 @@ class APIName extends Api
 
               // access database and proform queris with prepared statements or jsut queris.
               // return $this->dbCall("SELECT * FROM `user` WHERE `user_id`=?", 'i', [$userId]);
+
+              $databaseOperation = $this->crudOperator;
+             // $databaseOperation->insert('test_1',$_POST);
+              //$databaseOperation->update('test_1',$_POST,array('col_1'=>34,'col_2'=>'hf'));
+
        }
 }

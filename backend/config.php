@@ -10,7 +10,9 @@ define("API_KEY","sk_test_51P9pPhFsAJwfAbwFcliPUIoCVJGoGiELXz9cgMVbqEtsjR8tKJ1pl
 
 // database config
 define("DB_SERVER", "localhost");
-define("DB_USERNAME", "root");
+//define("DB_USERNAME", "root");
+define("DB_USERNAME", "e-commerce-001-user");
+
 define("DB_PASSWORD", "KaviskaDilshan12#$");
 define("DB_DATABASE", "e-commerce-001");
 // define("DB_USERNAME", "u178904104_fortxcore");

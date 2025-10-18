@@ -106,7 +106,7 @@ class User extends Api
             <p>We\'re thrilled to extend our warmest greetings as you embark on your journey with us at E Commerce Website. 🚗✈️ Your account has been successfully created, marking the beginning of your seamless experience with our e commerce service.</p>
             <p>To ensure you enjoy every moment of your travels with convenience and peace of mind, we\'ve tailored our services to meet your needs. Whether it\'s a business trip or a well-deserved vacation, count on us to make your parking experience hassle-free and enjoyable.</p>
             <p>Before we get started, please verify your email by clicking on the link below:</p>
-            <p><a href="http://' . $login_link . '">Verify Email</a></p>
+            <p><a href="https://' . $login_link . '">Verify Email</a></p>
             <p>Should you have any questions or need assistance, our dedicated customer support team is just a phone call away at 0333 355 0956. We\'re committed to providing you with the highest level of service, ensuring your journey starts and ends on a positive note.</p>
             <p>Thank you for entrusting Your Meet & Greet with your parking needs. 🙏 We eagerly anticipate the opportunity to serve you and exceed your expectations.</p>';
 
@@ -228,11 +228,12 @@ class User extends Api
 
         // Send welcome email
         $body = '<p style="color: black;">Dear Customer,</p>
-            <p style="color: black;">Welcome aboard! We are thrilled to have you join Your Meet & Greet Service. Your account has been successfully verified, and you\'re all set to start using our convenient meet and greet solutions.</p>
-            <p style="color: black;">With Your Meet & Greet Service, you can seamlessly book professional and friendly greeters for your events or personal needs. We are committed to providing exceptional service to make your experience memorable.</p>
-            <p style="color: black;">If you have any questions or need assistance, please don\'t hesitate to reach out to our customer support team at +0333 355 0956.</p>
-            <p style="color: black;">Once again, thank you for choosing Your Meet & Greet Service. We look forward to assisting you.</p>
-            <p style="color: black;">Best regards,<br>[Your Meet & Greet Service Team]</p>';
+            <p style="color: black;">Welcome to our e‑commerce store. Your account has been verified successfully and you can start shopping right away.</p>
+            <p style="color: black;">Browse new arrivals, add items to your wishlist and cart, and checkout securely with multiple payment options.</p>
+            <p style="color: black;">From your account dashboard you can track orders, manage returns, and update saved addresses and payment methods.</p>
+            <p style="color: black;">If you need any assistance, please contact our customer support team at +0333 355 0956.</p>
+            <p style="color: black;">Thank you for choosing us. Happy shopping!</p>
+            <p style="color: black;">Best regards,<br>E‑Commerce Team</p>';
 
         $emailSender = new EmailSender();
         $emailSender->sendEmail($email, 'Account Verified - Welcome to Your Meet & Greet Service!', $body);

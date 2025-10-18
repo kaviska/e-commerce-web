@@ -12,15 +12,17 @@ class EmailSender {
     public function __construct() {
         // Create a new PHPMailer instance
         $this->mail = new PHPMailer(true);
+        $this->mail->SMTPDebug = 2;
+$this->mail->Debugoutput = 'html';
 
         // SMTP configuration
         $this->mail->isSMTP();
         $this->mail->Host = 'smtp.titan.email';
-        $this->mail->Port = 465;
+        $this->mail->Port = 587;
         $this->mail->SMTPAuth = true;
         $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk';
         $this->mail->Password = 'b00x123#!';
-        $this->mail->SMTPSecure = 'ssl';
+        $this->mail->SMTPSecure = 'tls';
     }
 
     public function sendEmail($recipient, $subject, $body, $senderName = 'Meet & Greet Service') {

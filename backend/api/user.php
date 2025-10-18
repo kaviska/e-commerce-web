@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Author: KAviska Dilshan, Janith Nirmal
+ * Author: KAviska Dilshan
  * Description: User API
  */
 

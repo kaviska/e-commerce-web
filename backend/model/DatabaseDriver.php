@@ -7,6 +7,11 @@ class DatabaseDriver
     // Constructor that takes in connection details and establishes a connection to the database
     public function __construct()
     {
+        // Check if mysqli extension is loaded
+        if (!extension_loaded('mysqli')) {
+            die("Error: MySQLi extension is not installed or enabled on this server. Please contact your hosting provider to enable the MySQLi extension.");
+        }
+
         $host = DB_SERVER;
         $user = DB_USERNAME;
         $password = DB_PASSWORD; // janith

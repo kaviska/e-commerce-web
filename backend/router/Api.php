@@ -53,11 +53,11 @@ class Api extends Controller
 
        /**
         * @param string $query
-        * @param array $data
-        * @param string $type
+        * @param string|null $types
+        * @param array|null $data
         */
        //this function use get the data from the database
-       public function dbCall(string $query, string $types = null, array $data = null)
+       public function dbCall(string $query, ?string $types = null, ?array $data = null)
        {
               //check $types and $data null
               if ($types && $data) {

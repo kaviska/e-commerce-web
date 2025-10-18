@@ -18,15 +18,15 @@ class EmailSender {
         $this->mail->Host = 'smtp.titan.email';
         $this->mail->Port = 465;
         $this->mail->SMTPAuth = true;
-        $this->mail->Username = 'info.iymart@gmail.com';
-        $this->mail->Password = 'ladiaffuinspyzyu';
+        $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk';
+        $this->mail->Password = 'b00x123#!';
         $this->mail->SMTPSecure = 'ssl';
     }
 
     public function sendEmail($recipient, $subject, $body, $senderName = 'Meet & Greet Service') {
         try {
             // Sender and recipient
-            $this->mail->setFrom('info.iymart@gmail.com', $senderName);
+            $this->mail->setFrom('parking@yourmeetandgreetservice.co.uk', $senderName);
             $this->mail->addAddress($recipient);
 
             // Email content

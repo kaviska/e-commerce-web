@@ -50,11 +50,21 @@ class Router
         */
        public function callApi(array $URLPath)
        {
+              $apiName = ($URLPath[0]) ?? null;
               //upper case first character url path
-              $API = ucfirst(($URLPath[0]) ?? null);
-              // check if file path is exist
-              if (file_exists($filePath = $this->apiPath . $API . ".php")) {
-                     require_once $filePath;
+              $API = ucfirst($apiName);
+              
+              // check if file path exists (try capitalized first, then lowercase)
+              $capitalizedPath = $this->apiPath . $API . ".php";
+              $lowercasePath = $this->apiPath . $apiName . ".php";
+              
+              if (file_exists($capitalizedPath)) {
+                     require_once $capitalizedPath;
+                     array_shift($URLPath);
+                     //create a related api object
+                     new $API($URLPath);
+              } else if (file_exists($lowercasePath)) {
+                     require_once $lowercasePath;
                      array_shift($URLPath);
                      //create a related api object
                      new $API($URLPath);

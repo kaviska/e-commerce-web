@@ -12,7 +12,7 @@
  * @link https://tech.jotform.com/what-is-router-and-how-to-create-your-own-router-with-php-fad811cf2873
  */
 //import statement
-require_once(__DIR__ . "/View.php");
+require_once(__DIR__ . "/view.php");
 
 /**
  * this class initializes the application routes and identify API or View instances

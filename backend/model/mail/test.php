@@ -6,26 +6,35 @@ require_once "Exception.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-class EmailSender {
+class EmailSender
+{
     private $mail;
 
-    public function __construct() {
+    public function __construct()
+    {
         // Create a new PHPMailer instance
         $this->mail = new PHPMailer(true);
-        $this->mail->SMTPDebug = 2;
-$this->mail->Debugoutput = 'html';
 
         // SMTP configuration
+        // $this->mail->isSMTP();
+        // $this->mail->Host = 'smtp.titan.email';
+        // $this->mail->Port = 465;
+        // $this->mail->SMTPAuth = true;
+        // $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk';
+        // $this->mail->Password = 'b00x123#!';
+        // $this->mail->SMTPSecure = 'ssl';
+
         $this->mail->isSMTP();
-        $this->mail->Host = 'smtp.titan.email';
-        $this->mail->Port = 587;
-        $this->mail->SMTPAuth = true;
-        $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk';
-        $this->mail->Password = 'b00x123#!';
-        $this->mail->SMTPSecure = 'tls';
+        $this->mail->Host = 'localhost'; //
+        $this->mail->SMTPAuth = false;
+        $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk'; //
+        $this->mail->Password = 'b00x123#!'; //
+        $this->mail->SMTPSecure = '';
+        $this->mail->Port = 25;
     }
 
-    public function sendEmail($recipient, $subject, $body, $senderName = 'Meet & Greet Service') {
+    public function sendEmail($recipient, $subject, $body, $senderName = 'Meet & Greet Service')
+    {
         try {
             // Sender and recipient
             $this->mail->setFrom('parking@yourmeetandgreetservice.co.uk', $senderName);
@@ -46,5 +55,3 @@ $this->mail->Debugoutput = 'html';
 }
 
 // Example usage:
-
-?>

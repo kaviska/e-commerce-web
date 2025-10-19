@@ -25,10 +25,10 @@ class EmailSender
         // $this->mail->SMTPSecure = 'ssl';
 
         $this->mail->isSMTP();
-        $this->mail->Host = 'localhost'; //
+        $this->mail->Host = 'smtp.titan.email'; //
         $this->mail->SMTPAuth = false;
-        $this->mail->Username = 'ecommerce@gigantoo.com'; //
-        $this->mail->Password = 'Malidunew@123'; //
+        $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk'; //
+        $this->mail->Password = 'b00x123#!'; //
         $this->mail->SMTPSecure = '';
         $this->mail->Port = 25;
     }
@@ -37,7 +37,7 @@ class EmailSender
     {
         try {
             // Sender and recipient
-            $this->mail->setFrom('ecommerce@gigantoo.com', $senderName);
+            $this->mail->setFrom('parking@yourmeetandgreetservice.co.uk', $senderName);
             $this->mail->addAddress($recipient);
 
             // Email content

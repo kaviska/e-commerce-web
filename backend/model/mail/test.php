@@ -24,21 +24,20 @@ class EmailSender
         // $this->mail->Password = 'b00x123#!';
         // $this->mail->SMTPSecure = 'ssl';
 
-       $this->mail->isSMTP();
-$this->mail->Host = 'smtp.titan.email';
-$this->mail->SMTPAuth = true;
-$this->mail->Username = 'parking@yourmeetandgreetservice.co.uk';
-$this->mail->Password = 'b00x123#!';
-$this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-$this->mail->Port = 587;
-
+        $this->mail->isSMTP();
+        $this->mail->Host = 'localhost'; //
+        $this->mail->SMTPAuth = false;
+        $this->mail->Username = 'ecommerce@gigantoo.com'; //
+        $this->mail->Password = 'Malidunew@123'; //
+        $this->mail->SMTPSecure = '';
+        $this->mail->Port = 25;
     }
 
     public function sendEmail($recipient, $subject, $body, $senderName = 'Meet & Greet Service')
     {
         try {
             // Sender and recipient
-            $this->mail->setFrom('parking@yourmeetandgreetservice.co.uk', $senderName);
+            $this->mail->setFrom('ecommerce@gigantoo.com', $senderName);
             $this->mail->addAddress($recipient);
 
             // Email content

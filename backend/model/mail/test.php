@@ -15,22 +15,80 @@ class EmailSender
         // Create a new PHPMailer instance
         $this->mail = new PHPMailer(true);
 
-        // SMTP configuration
-        // $this->mail->isSMTP();
-        // $this->mail->Host = 'smtp.titan.email';
-        // $this->mail->Port = 465;
-        // $this->mail->SMTPAuth = true;
-        // $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk';
-        // $this->mail->Password = 'b00x123#!';
-        // $this->mail->SMTPSecure = 'ssl';
+        // Try multiple SMTP configurations based on server capabilities
+        $this->setupSMTPConfiguration();
+    }
 
-        $this->mail->isSMTP();
-        $this->mail->Host = 'smtp.titan.email'; //
-        $this->mail->SMTPAuth = false;
-        $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk'; //
-        $this->mail->Password = 'b00x123#!'; //
-        $this->mail->SMTPSecure = '';
-        $this->mail->Port = 25;
+    private function setupSMTPConfiguration()
+    {
+        // Configuration 1: Try SSL on port 465 (original working local config)
+        try {
+            $this->mail->isSMTP();
+            $this->mail->Host = 'smtp.titan.email';
+            $this->mail->Port = 465;
+            $this->mail->SMTPAuth = true;
+            $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk';
+            $this->mail->Password = 'b00x123#!';
+            $this->mail->SMTPSecure = 'ssl';
+            
+            // Disable SSL verification if needed (for testing)
+            $this->mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
+            
+            error_log("EmailSender: Configured SSL on port 465");
+            return;
+        } catch (Exception $e) {
+            error_log("EmailSender: SSL 465 config failed: " . $e->getMessage());
+        }
+
+        // Configuration 2: Try TLS on port 587
+        try {
+            $this->mail->isSMTP();
+            $this->mail->Host = 'smtp.titan.email';
+            $this->mail->Port = 587;
+            $this->mail->SMTPAuth = true;
+            $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk';
+            $this->mail->Password = 'b00x123#!';
+            $this->mail->SMTPSecure = 'tls';
+            
+            $this->mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
+            
+            error_log("EmailSender: Configured TLS on port 587");
+            return;
+        } catch (Exception $e) {
+            error_log("EmailSender: TLS 587 config failed: " . $e->getMessage());
+        }
+
+        // Configuration 3: Plain SMTP on port 25 (your current fallback)
+        try {
+            $this->mail->isSMTP();
+            $this->mail->Host = 'smtp.titan.email';
+            $this->mail->SMTPAuth = false;
+            $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk';
+            $this->mail->Password = 'b00x123#!';
+            $this->mail->SMTPSecure = '';
+            $this->mail->Port = 25;
+            
+            error_log("EmailSender: Configured plain SMTP on port 25");
+            return;
+        } catch (Exception $e) {
+            error_log("EmailSender: Plain SMTP 25 config failed: " . $e->getMessage());
+        }
+
+        // Configuration 4: Use PHP's built-in mail() function as last resort
+        $this->mail->isMail();
+        error_log("EmailSender: Falling back to PHP mail() function");
     }
 
     public function sendEmail($recipient, $subject, $body, $senderName = 'Meet & Greet Service')
@@ -41,6 +99,9 @@ class EmailSender
             $this->mail->Debugoutput = function($str, $level) {
                 error_log("PHPMailer DEBUG ($level): $str");
             };
+
+            // Test server connectivity before sending
+            $this->testServerConnectivity();
 
             // Sender and recipient
             $this->mail->setFrom('parking@yourmeetandgreetservice.co.uk', $senderName);
@@ -57,6 +118,7 @@ class EmailSender
             error_log("EmailSender: SMTP Host: " . $this->mail->Host);
             error_log("EmailSender: SMTP Port: " . $this->mail->Port);
             error_log("EmailSender: SMTP Auth: " . ($this->mail->SMTPAuth ? 'true' : 'false'));
+            error_log("EmailSender: SMTP Secure: " . $this->mail->SMTPSecure);
 
             // Send the email
             $this->mail->send();
@@ -76,8 +138,45 @@ class EmailSender
                 'error' => true,
                 'message' => $e->getMessage(),
                 'details' => $this->mail->ErrorInfo,
-                'code' => $e->getCode()
+                'code' => $e->getCode(),
+                'smtp_config' => [
+                    'host' => $this->mail->Host,
+                    'port' => $this->mail->Port,
+                    'auth' => $this->mail->SMTPAuth,
+                    'secure' => $this->mail->SMTPSecure
+                ]
             ];
+        }
+    }
+
+    private function testServerConnectivity()
+    {
+        $host = $this->mail->Host;
+        $port = $this->mail->Port;
+        
+        error_log("EmailSender: Testing connectivity to $host:$port");
+        
+        // Test if we can connect to the SMTP server
+        $connection = @fsockopen($host, $port, $errno, $errstr, 10);
+        if (!$connection) {
+            error_log("EmailSender: Cannot connect to $host:$port - Error: $errno - $errstr");
+            
+            // Try alternative ports if current one fails
+            $alternativePorts = [25, 465, 587, 2525];
+            foreach ($alternativePorts as $altPort) {
+                if ($altPort != $port) {
+                    $altConnection = @fsockopen($host, $altPort, $altErrno, $altErrstr, 5);
+                    if ($altConnection) {
+                        error_log("EmailSender: Alternative port $altPort is accessible");
+                        fclose($altConnection);
+                    } else {
+                        error_log("EmailSender: Alternative port $altPort also blocked: $altErrno - $altErrstr");
+                    }
+                }
+            }
+        } else {
+            error_log("EmailSender: Successfully connected to $host:$port");
+            fclose($connection);
         }
     }
 }

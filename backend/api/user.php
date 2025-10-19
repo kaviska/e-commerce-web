@@ -479,6 +479,65 @@ class User extends Api
         $userList = $this->dbCall($query, $dataType, $data);
         return ["status" => "success", "results" => $userList];
     }
+    public function sampleMail(){
+        // Check if the request method is POST
+        if (!self::isPostMethod()) {
+            return ['status' => 'failed', 'error' => 'Invalid request method'];
+        }
+
+        // Check if the request parameters are set
+        if (self::postMethodHasError("email", "subject", "message")) {
+            return ['status' => 'failed', 'error' => 'One or more required fields missing (email, subject, message)'];
+        }
+
+        // Retrieve data from POST parameters with trimming
+        $email = trim($_POST['email']);
+        $subject = trim($_POST['subject']);
+        $message = trim($_POST['message']);
+
+        // Data validation
+        $dataToValidate = [
+            'email' => ['user_email' => $email],
+        ];
+
+        // Perform data validation
+        $validationErrors = $this->validateData($dataToValidate);
+        if (!empty((array)$validationErrors)) {
+            return [
+                'status' => 'failed', 
+                'error' => 'Invalid email format'
+            ];
+        }
+
+        // Prepare email body with proper formatting
+        $body = '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+            <h2 style="color: #333; text-align: center;">Test Email</h2>
+            <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                <p style="color: #666; margin: 0;"><strong>This is a test email sent from the e-commerce application</strong></p>
+                <hr style="border: 1px solid #eee; margin: 15px 0;">
+                <div style="color: #333; line-height: 1.6;">
+                    ' . nl2br(htmlspecialchars($message)) . '
+                </div>
+            </div>
+            <p style="color: #999; font-size: 12px; text-align: center; margin-top: 30px;">
+                Sent on ' . date('Y-m-d H:i:s') . ' | E-commerce Test System
+            </p>
+        </div>';
+
+        // Send the email using EmailSender
+        $emailSender = new EmailSender();
+        if ($emailSender->sendEmail($email, $subject, $body)) {
+            return [
+                'status' => 'success', 
+                'message' => 'Test email sent successfully to ' . $email
+            ];
+        } else {
+            return [
+                'status' => 'failed', 
+                'error' => 'Failed to send email. Please check email configuration.'
+            ];
+        }
+    }
 
     //admin panel apis goes here
 }

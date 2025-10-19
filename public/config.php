@@ -81,4 +81,11 @@ define("ROUTES", [
         "css" => ["OrderTracker"],
         "isCustom" => false
     ],
+    [
+        "routes"=>["testMail"],
+        "fileName"=>"testMail",
+        "title"=>"Test Mail",
+        "js"=>["testMail"],
+        "css"=>["testMail"],
+    ]
 ]);

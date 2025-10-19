@@ -20,8 +20,8 @@ class EmailSender
         $this->mail->Host = 'smtp.titan.email';
         $this->mail->Port = 465;
         $this->mail->SMTPAuth = true;
-        $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk';
-        $this->mail->Password = 'b00x123#!';
+        $this->mail->Username = 'emil';
+        $this->mail->Password = 'password';
         $this->mail->SMTPSecure = 'ssl';
 
         // $this->mail->isSMTP();

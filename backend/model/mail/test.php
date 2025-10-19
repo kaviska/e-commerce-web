@@ -1,10 +1,10 @@
 <?php
-// Include PHPMailer
-require_once "SMTP.php";
 require_once "PHPMailer.php";
+require_once "SMTP.php";
 require_once "Exception.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class EmailSender
 {
@@ -12,46 +12,35 @@ class EmailSender
 
     public function __construct()
     {
-        // Create a new PHPMailer instance
         $this->mail = new PHPMailer(true);
 
-        // SMTP configuration
         $this->mail->isSMTP();
         $this->mail->Host = 'smtp.titan.email';
-        $this->mail->Port = 465;
         $this->mail->SMTPAuth = true;
         $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk';
         $this->mail->Password = 'b00x123#!';
-        $this->mail->SMTPSecure = 'ssl';
+        $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $this->mail->Port = 587;
 
-        // $this->mail->isSMTP();
-        // $this->mail->Host = 'smtp.titan.email'; //
-        // $this->mail->SMTPAuth = false;
-        // $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk'; //
-        // $this->mail->Password = 'b00x123#!'; //
-        // $this->mail->SMTPSecure = 'None';
-        // $this->mail->Port = 25;
+        $this->mail->SMTPDebug = 2;
+        $this->mail->Debugoutput = 'html';
     }
 
-    public function sendEmail($recipient, $subject, $body, $senderName = 'Meet & Greet Service')
+    public function sendEmail($recipient, $subject, $body)
     {
         try {
-            // Sender and recipient
-            $this->mail->setFrom('parking@yourmeetandgreetservice.co.uk', $senderName);
+            $this->mail->setFrom('parking@yourmeetandgreetservice.co.uk', 'Meet & Greet Service');
             $this->mail->addAddress($recipient);
 
-            // Email content
             $this->mail->isHTML(true);
             $this->mail->Subject = $subject;
             $this->mail->Body = $body;
 
-            // Send the email
             $this->mail->send();
-            return true; // Email sent successfully
+            echo "✅ Email sent successfully!";
         } catch (Exception $e) {
-            return false; // Failed to send email
+            echo "❌ Email failed: " . $this->mail->ErrorInfo;
         }
     }
 }
 
-// Example usage:

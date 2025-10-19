@@ -36,6 +36,12 @@ class EmailSender
     public function sendEmail($recipient, $subject, $body, $senderName = 'Meet & Greet Service')
     {
         try {
+            // Enable debug output for detailed error information
+            $this->mail->SMTPDebug = 2; // 0 = off, 1 = client messages, 2 = client and server messages
+            $this->mail->Debugoutput = function($str, $level) {
+                error_log("PHPMailer DEBUG ($level): $str");
+            };
+
             // Sender and recipient
             $this->mail->setFrom('parking@yourmeetandgreetservice.co.uk', $senderName);
             $this->mail->addAddress($recipient);
@@ -45,11 +51,33 @@ class EmailSender
             $this->mail->Subject = $subject;
             $this->mail->Body = $body;
 
+            // Log email attempt
+            error_log("EmailSender: Attempting to send email to: $recipient");
+            error_log("EmailSender: Subject: $subject");
+            error_log("EmailSender: SMTP Host: " . $this->mail->Host);
+            error_log("EmailSender: SMTP Port: " . $this->mail->Port);
+            error_log("EmailSender: SMTP Auth: " . ($this->mail->SMTPAuth ? 'true' : 'false'));
+
             // Send the email
             $this->mail->send();
+            
+            error_log("EmailSender: Email sent successfully to: $recipient");
             return true; // Email sent successfully
         } catch (Exception $e) {
-            return false; // Failed to send email
+            // Log detailed error information
+            error_log("EmailSender ERROR: " . $e->getMessage());
+            error_log("EmailSender ERROR Details: " . $this->mail->ErrorInfo);
+            error_log("EmailSender ERROR Code: " . $e->getCode());
+            error_log("EmailSender ERROR Line: " . $e->getLine());
+            error_log("EmailSender ERROR File: " . $e->getFile());
+            
+            // Return detailed error for debugging (you can remove this in production)
+            return [
+                'error' => true,
+                'message' => $e->getMessage(),
+                'details' => $this->mail->ErrorInfo,
+                'code' => $e->getCode()
+            ];
         }
     }
 }

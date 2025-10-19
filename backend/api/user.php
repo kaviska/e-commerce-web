@@ -111,13 +111,25 @@ class User extends Api
             <p>Thank you for entrusting Your Meet & Greet with your parking needs. 🙏 We eagerly anticipate the opportunity to serve you and exceed your expectations.</p>';
 
         $emailSender = new EmailSender();
-        if ($emailSender->sendEmail($email, 'Welcome to Your Meet & Greet Service!', $body)) {
+        $emailResult = $emailSender->sendEmail($email, 'Welcome to Your Meet & Greet Service!', $body);
+        
+        if ($emailResult === true) {
             return [
                 'status' => 'success',
                 'message' => 'Registration successful. Please check your email to verify your account.'
             ];
         } else {
-            return ['status' => 'failed', 'error' => "Registration successful but email verification failed. Please contact support."];
+            // Log detailed email error for debugging
+            if (is_array($emailResult)) {
+                error_log("Registration Email Error: " . json_encode($emailResult));
+                return [
+                    'status' => 'failed', 
+                    'error' => "Registration successful but email verification failed. Error: " . $emailResult['message']
+                ];
+            } else {
+                error_log("Registration Email Error: Unknown error occurred");
+                return ['status' => 'failed', 'error' => "Registration successful but email verification failed. Please contact support."];
+            }
         }
     }
 
@@ -159,10 +171,22 @@ class User extends Api
         $body = '<p>Click below to verify your action </p> <br> http://' . $login_link;
 
         $emailSender = new EmailSender();
-        if ($emailSender->sendEmail($email, 'Verification Link', $body)) {
+        $emailResult = $emailSender->sendEmail($email, 'Verification Link', $body);
+        
+        if ($emailResult === true) {
             return ['status' => 'success'];
         } else {
-            return ['status' => 'failed', 'error' => "Email Send Unsuccessfull"];
+            // Log detailed email error for debugging
+            if (is_array($emailResult)) {
+                error_log("Forgot Password Email Error: " . json_encode($emailResult));
+                return [
+                    'status' => 'failed', 
+                    'error' => "Email send failed. Error: " . $emailResult['message']
+                ];
+            } else {
+                error_log("Forgot Password Email Error: Unknown error occurred");
+                return ['status' => 'failed', 'error' => "Email Send Unsuccessful"];
+            }
         }
     }
 
@@ -236,7 +260,18 @@ class User extends Api
             <p style="color: black;">Best regards,<br>E‑Commerce Team</p>';
 
         $emailSender = new EmailSender();
-        $emailSender->sendEmail($email, 'Account Verified - Welcome to Your Meet & Greet Service!', $body);
+        $emailResult = $emailSender->sendEmail($email, 'Account Verified - Welcome to Your Meet & Greet Service!', $body);
+        
+        // Log email result for debugging
+        if ($emailResult === true) {
+            error_log("Welcome Email: Successfully sent to $email");
+        } else {
+            if (is_array($emailResult)) {
+                error_log("Welcome Email Error: " . json_encode($emailResult));
+            } else {
+                error_log("Welcome Email Error: Unknown error occurred for $email");
+            }
+        }
 
         // Redirect to success page
         header('Location: http://' . $_SERVER['HTTP_HOST'] . '/verification?status=Success&message=Account verified successfully', true, 301);

@@ -16,21 +16,21 @@ class EmailSender
         $this->mail = new PHPMailer(true);
 
         // SMTP configuration
-        // $this->mail->isSMTP();
-        // $this->mail->Host = 'smtp.titan.email';
-        // $this->mail->Port = 465;
-        // $this->mail->SMTPAuth = true;
-        // $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk';
-        // $this->mail->Password = 'b00x123#!';
-        // $this->mail->SMTPSecure = 'ssl';
-
         $this->mail->isSMTP();
-        $this->mail->Host = 'smtp.titan.email'; //
-        $this->mail->SMTPAuth = false;
-        $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk'; //
-        $this->mail->Password = 'b00x123#!'; //
-        $this->mail->SMTPSecure = 'None';
-        $this->mail->Port = 25;
+        $this->mail->Host = 'smtp.titan.email';
+        $this->mail->Port = 465;
+        $this->mail->SMTPAuth = true;
+        $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk';
+        $this->mail->Password = 'b00x123#!';
+        $this->mail->SMTPSecure = 'ssl';
+
+        // $this->mail->isSMTP();
+        // $this->mail->Host = 'smtp.titan.email'; //
+        // $this->mail->SMTPAuth = false;
+        // $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk'; //
+        // $this->mail->Password = 'b00x123#!'; //
+        // $this->mail->SMTPSecure = 'None';
+        // $this->mail->Port = 25;
     }
 
     public function sendEmail($recipient, $subject, $body, $senderName = 'Meet & Greet Service')

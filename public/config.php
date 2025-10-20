@@ -87,5 +87,6 @@ define("ROUTES", [
         "title"=>"Test Mail",
         "js"=>["testMail"],
         "css"=>["testMail"],
+        "isCustom"=>true
     ]
 ]);

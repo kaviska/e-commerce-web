@@ -1,10 +1,11 @@
 <?php
 // Include PHPMailer
-require_once "SMTP.php";
 require_once "PHPMailer.php";
+require_once "SMTP.php";
 require_once "Exception.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class EmailSender
 {
@@ -15,29 +16,26 @@ class EmailSender
         // Create a new PHPMailer instance
         $this->mail = new PHPMailer(true);
 
-        // SMTP configuration
+        // GoDaddy SMTP configuration
         $this->mail->isSMTP();
-$this->mail->Host = 'smtpout.secureserver.net'; 
-        $this->mail->Port = 587;
-        $this->mail->SMTPAuth = true;
-        $this->mail->Username = 'info@gigantoo.com	';
-        $this->mail->Password = 'Malidunew@123';
-        $this->mail->SMTPSecure = 'tls';
+        $this->mail->Host = 'localhost';          // GoDaddy relay server
+        $this->mail->Port = 25;                   // GoDaddy allows only port 25 for relay
+        $this->mail->SMTPAuth = false;            // No authentication
+        $this->mail->SMTPSecure = false;          // No encryption
 
-        // $this->mail->isSMTP();
-        // $this->mail->Host = 'smtp.titan.email'; //
-        // $this->mail->SMTPAuth = false;
-        // $this->mail->Username = 'info@gigantoo.com	'; //
-        // $this->mail->Password = 'b00x123#!'; //
-        // $this->mail->SMTPSecure = 'None';
-        // $this->mail->Port = 25;
+        // Optional: enable debug output (remove after testing)
+        // $this->mail->SMTPDebug = 2;
+        // $this->mail->Debugoutput = 'html';
     }
 
     public function sendEmail($recipient, $subject, $body, $senderName = 'Meet & Greet Service')
     {
         try {
+            // Use a valid domain email as sender
+            $fromEmail = 'info@gigantoo.com';
+
             // Sender and recipient
-            $this->mail->setFrom('info@gigantoo.com	', $senderName);
+            $this->mail->setFrom($fromEmail, $senderName);
             $this->mail->addAddress($recipient);
 
             // Email content
@@ -47,11 +45,14 @@ $this->mail->Host = 'smtpout.secureserver.net';
 
             // Send the email
             $this->mail->send();
-            return true; // Email sent successfully
+            return true;
         } catch (Exception $e) {
-            return false; // Failed to send email
+            echo 'Mailer Error: ' . $this->mail->ErrorInfo;
+            return false;
         }
     }
 }
 
 // Example usage:
+// $email = new EmailSender();
+// $email->sendEmail('test@example.com', 'Test Subject', '<h1>Hello from GoDaddy!</h1>');

@@ -1,399 +1,47 @@
 <?php
-define("VERSION", '1.0');
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
-// CONFIG
-$prefix = "TATT-";
-$filePath = __FILE__;
-$file = basename(__FILE__);
-$current_dir = realpath(dirname(__FILE__));
-$tempDir = sys_get_temp_dir();
-$os = getOS();
-$directorySeparator = ($os === 'Windows') ? '\\' : '/'; // Use backslash for Windows and forward slash for Linux
-$now = setTime();
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+//GoDaddy Unified PHP Test Script "GEOFF" v1.0 - Lovingly Crafted by the Hosting Tech Leads
+//Tests PHP read, PHP write, PHP mail, and PHP database functions
+//Uses PHPMailer by Andy Prevost and Marcus Bointon, with enhanced scripting by Wesley Frederick
+
+$current_dir = dirname(__FILE__);
+$prefix = "phptest-";
+$now = date("Y-m-d.H:i:s");
+touch($current_dir . DIRECTORY_SEPARATOR . $prefix . $now);
+
+//Deluxe mail test script by Wesley Fredrick
+//
+//Offers three ways to test mail:
+//
+//PHP mail()          - Uses the PHP mail() function
+//SMTP                - Opens a direct connection to the relay server and uses the smtp protocol
+//sendmail from shell - Uses a php shell() to run the sendmail command as if from SSH
+
+ini_set('track_errors', 1);
 date_default_timezone_set('America/Phoenix');
-$testFiles = array($filePath);
-// END CONFIG
 
-function setTime(){
-    $timezone = new DateTime('now', new DateTimeZone('UTC'));
-    $timezone->modify('-7 hours');
-    $timeFormat = $timezone->format('d-m-Y-H:i');
-
-    return $timeFormat; 
-}
-
-function getPHPvers() {
-    $phpVers = phpversion();
-    $phpVersfloat = floatval($phpVers);
-    if ($phpVersfloat <= 5.5) {
-        echo "Error: Your PHP version ($phpVers) is 5.5 or lower. Please upgrade to a higher version for this tool to work.";
-        exit();
-    } else {
-        return $phpVers; 
-    }
-}
-$phpVersion = getPHPvers(); 
-
-function tattPing(){
-    $ch = curl_init();
-    $domain = $_SERVER['HTTP_HOST'];
-    $file = $_SERVER['SCRIPT_NAME'];
-
-    // Set the URL and parameters for the request - need to replcae with official home
-    $url = 'xxxHOSTxxx/listener.php?remotePing&domain=' . urlencode($domain) . '&file=' . urlencode($file);
-
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-    $response = curl_exec($ch);
-
-    if (curl_errno($ch)) {
-        // Handle the error if necessary
-        echo 'cURL Error: ' . curl_error($ch);
-    }
-
-    curl_close($ch);
-}
-
-
-function getOS()
-{
-    $os = strtolower(PHP_OS);
-    if (strpos($os, 'win') === 0) {
-        return 'Windows';
-    } elseif (strpos($os, 'linux') === 0) {
-        return 'Linux';
-    } else {
-        // Unable to detect the host OS
-        return 'Unknown';
-    }
-}
-
-function setWrite($filePath)
-{
-    if ($os === 'Linux') {
-        // Linux host, change file permissions
-        if (chmod($filename, 0666)) {
-            return true;
-        } else {
-            return false;
-        }
-    } elseif ($os === 'Windows') {
-        // Windows host, cannot modify permissions
-        return false;
-    } else {
-        // Unknown host OS
-        return false;
-    }
-}
-
-function addFilesToArray(&$testFiles, $current_dir, $prefix) {
-    $pattern = $prefix . "*";
-    $matchingFiles = glob($current_dir . DIRECTORY_SEPARATOR . $pattern);
-
-    foreach ($matchingFiles as $file) {
-        if (is_file($file)) {
-            $testFiles[] = $file;
-        }
-    }
-}
-
-// Check if the file is writable
-if (!is_writable($filePath)) {
-    if (!setWrite($filePath)) {
-        echo "Unable to set file perms, please ensure file has write and modify permissions.";
-        exit;
-    }
-}
-
-function testPHPfiles($tempDir, $now) {
-    $prefix = "TATT-fileTest-";
-    $testFile = $tempDir . DIRECTORY_SEPARATOR . $prefix . $now;
-    $fileResults = array(
-        'fileCreate' => '',
-        'fileWrite' => '',
-        'fileRead' => '',
-        'fileRemove' => ''
-    );
-
-    $fileContent = "This is a test file created by PHP.";
-    $fileHandle = fopen($testFile, 'w');
-    if ($fileHandle === false) {
-        $fileResults['fileCreate'] = "Failed";
-        return $fileResults;
-    } else {
-        $fileResults['fileCreate'] = "Success";
-    }
-
-    if (fwrite($fileHandle, $fileContent) === false) {
-        $fileResults['fileWrite'] = "Failed";
-        fclose($fileHandle);
-        return $fileResults;
-    } else {
-        $fileResults['fileWrite'] = "Success";
-    }
-
-    fclose($fileHandle);
-
-    $readFile = file_get_contents($testFile);
-    if ($readFile !== false) {
-        $fileResults['fileRead'] = "Success";
-    } else {
-        $fileResults['fileRead'] = "Failed";
-    }
-
-    if (unlink($testFile)) {
-        $fileResults['fileRemove'] = "Success";
-    } else {
-        $fileResults['fileRemove'] = "Failed";
-    }
-    return $fileResults;
-}
-
-function sessionTest() {
-    $sessionResults = array(
-        'sessionStart' => '', 
-        'sessionWrite' => '',
-        'sessionDestroy' => ''
-    );
-
-    if (session_status() == PHP_SESSION_NONE) {
-        session_start();
-        $sessionResults['sessionStart'] = 'Success'; 
-    } else {
-        $sessionResults['sessionStart'] = 'Failed'; 
-    }
-
-    $_SESSION['session_test'] = 'This is a test value for PHP session.';
-    if (isset($_SESSION['session_test'])) {
-        $sessionResults['sessionWrite'] = 'Success'; 
-    } else {
-        $sessionResults['sessionWrite'] = 'Failed'; 
-    }
-
-    session_destroy();
-
-    if (session_status() === PHP_SESSION_NONE) {
-        $sessionResults['sessionDestroy'] = 'Success'; 
-    } else {
-        $sessionResults['sessionDestroy'] = 'Failed';
-    }
-
-    return $sessionResults;
-}
-
-function removeSelf($os, $filePath, $testFiles, $current_dir, $prefix)
-{
-  addFilestoArray($testFiles, $current_dir, $prefix);
-    foreach ($testFiles as $filePath) {
-        if ($os === 'Linux') {
-            exec("rm " . escapeshellarg($filePath), $output, $returnVar);
-            if ($returnVar === 0) {
-                echo "File '$filePath' removed successfully.<br>";
-            } else {
-                echo "ALERT! Unable to remove the file '$filePath' using 'rm'. Make sure the file is writable.<br>";
-            }
-        } elseif ($os === 'Windows') {
-            if (unlink($filePath)) {
-                echo "File '$filePath' removed successfully.<br>";
-            } else {
-                echo "ALERT! Unable to remove the file '$filePath' using 'unlink'. Make sure the file is writable.<br>";
-            }
-        } else {
-            echo "ALERT! Unable to remove the file '$filePath'. Make sure the file is writable.<br>";
-        }
-    }
-}
-
-function runCron($now, &$cronJobResult) {
-    $tempDir = "./";
-    $prefix = "TATT-cronTest-";
-    $cronFile = $tempDir . DIRECTORY_SEPARATOR . $prefix . $now;
-    $testContent = 'This is a test file content.';
-    file_put_contents($cronFile, $testContent);
-    $cronCommand = 'php ' . $cronFile . ' > /dev/null 2>&1';
-    exec('(crontab -l ; echo "* * * * * ' . $cronCommand . '") | crontab -');
-
-    // Step 3: Wait for a moment to let the cron job run
-    sleep(5); // Adjust this time as needed
-
-    if (file_exists($cronFile)) {
-        //unlink($cronFile);
-       $cronJobResult = "Success";
-    } else {
-       $cronJobResult = "Failed";
-    }
-}
-
-function mysqlTest($dbhost, $dbname, $dbuser, $dbpass, $dbport) {
-    if (strlen($dbport) < 4) { $dbport = 3306; }
-    if (!function_exists('gethostname')) {
-        $hostname = `hostname`;
-        $hostnamearray = explode('.', $hostname);
-        $hostname = $hostnamearray[0];
-    } else {
-        $hostname = gethostname();
-    }
-
-    $htmlOutput = ""; // Initialize an empty string to store the HTML output
-
-    // Check to see if mysqli is available
-    if (!extension_loaded('mysqli') or $_POST['config'] == "mysql") {
-        $dbhost = $dbhost . ':' . $dbport;
-        // Create connection
-        $con = @mysql_connect($dbhost, $dbuser, $dbpass);
-        // Check connection
-        if (mysql_error()) {
-            die("Failed to connect to MySQL using the PHP mysql extension: " . mysql_error());
-        }
-        mysql_select_db($dbname, $con);
-        // Query the database to show all the tables.
-        $query = 'SHOW tables;';
-        $result = mysql_query($query);
-        // Build the HTML output for the tables
-        $htmlOutput .= "Here is a list of the tables in your database:<br>";
-        $htmlOutput .= "- $dbname <br>";
-        while ($row = mysql_fetch_array($result)) {
-            $htmlOutput .= "\ _ _ $row[0] <br>";
-        }
-        $htmlOutput .= "<br>The connection to \"$dbname\" was successful!";
-        $extension = "MySQL";
-        mysql_close($con);
-    } else {
-        // Create connection
-        $con = @mysqli_connect($dbhost, $dbuser, $dbpass, $dbname, $dbport);
-        // Check connection
-        if (mysqli_connect_errno()) {
-            $sqlResult = "Failed to connect to MySQL using the PHP mysqli extension: " . mysqli_connect_error();
-            return $sqlResult; // Return the error message
-        }
-        // Query the database to show all the tables.
-        $query = 'SHOW tables;';
-        $result = mysqli_query($con, $query);
-        // Build the HTML output for the tables
-        $htmlOutput .= "Here is a list of the tables in your database:<br>";
-        $htmlOutput .= "- $dbname <br>";
-        while ($row = mysqli_fetch_array($result)) {
-            $htmlOutput .= "\ _ _ $row[0] <br>";
-        }
-        $htmlOutput .= "<br>The connection to \"$dbname\" was successful!";
-        $extension = "MySQLi";
-        mysqli_close($con);
-    }
-
-    // Add additional information to the HTML output
-    $htmlOutput .= "<br>PHP extension used: " . $extension;
-    $htmlOutput .= "<br>Server Name: " . $hostname;
-
-    return $htmlOutput; // Return the HTML output
-}
-
-function fileUpload() {
-    $targetDir = "./"; // Directory to store the uploaded file
-    $targetFile = $targetDir . basename($_FILES["fileToUpload"]["name"]);
-    $uploadOk = 1;
-    $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-        // Check if the file is an actual file or a fake file
-        if (isset($_POST["submit"])) {
-            $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-            if ($check !== false) {
-                echo "File is an image - " . $check["mime"] . ".";
-                $uploadOk = 1;
-            } else {
-                echo "File is not an image. Please use a small image file for testing";
-                $uploadOk = 0;
-            }
-        }
-
-        // Check if the file already exists
-        if (file_exists($targetFile)) {
-            echo "Sorry, the file already exists.";
-            $uploadOk = 0;
-        }
-
-        // Check file size (in this example, we limit it to 1MB)
-        if ($_FILES["fileToUpload"]["size"] > 1000000) {
-            echo "Sorry, your file is too large.";
-            $uploadOk = 0;
-        }
-
-        // Allow certain file formats (in this example, we only allow JPG, JPEG, PNG, and GIF)
-        if (
-            $imageFileType != "jpg" &&
-            $imageFileType != "jpeg" &&
-            $imageFileType != "png" &&
-            $imageFileType != "gif"
-        ) {
-            echo "Sorry, only JPG, JPEG, PNG, and GIF files are allowed.";
-            $uploadOk = 0;
-        }
-
-      if ($uploadOk == 0) {
-        return "Sorry, your file was not uploaded.";
-    } else {
-        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $targetFile)) {
-            return "The file " . basename($_FILES["fileToUpload"]["name"]) . " has been uploaded.";
-        } else {
-            return "Sorry, there was an error uploading your file.";
-        }
-    }
-}
-
-
-// WINDOWS ONLY TESTS //
-function mssqlTest($serverName, $dbName, $username, $password) {
-    $serverName = filter_var($serverName, FILTER_SANITIZE_STRING);
-    $dbName = filter_var($dbName, FILTER_SANITIZE_STRING);
-    $username = filter_var($username, FILTER_SANITIZE_STRING);
-    $password = filter_var($password, FILTER_SANITIZE_STRING);
-
-    // try connection
-    $connectionOptions = array(
-        "Database" => $dbName,
-        "Uid" => $username,
-        "PWD" => $password
-    );
-
-    $conn = sqlsrv_connect($serverName, $connectionOptions);
-
-    if ($conn === false) {
-        // Connection failed
-        echo "Connection failed. Error: " . print_r(sqlsrv_errors(), true);
-    } else {
-        // Connection successful
-        echo "Connected to SQL Server successfully.\n";
-
-        // List tables
-        $query = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'";
-        $result = sqlsrv_query($conn, $query);
-
-        if ($result === false) {
-            echo "Error listing tables: " . print_r(sqlsrv_errors(), true);
-        } else {
-            echo "Tables in the database:\n";
-            echo $result;
-
-            sqlsrv_free_stmt($result);
-        }
-
-        // Close the connection
-        sqlsrv_close($conn);
-    }
-}
-
-if(isset($_GET['remoteRemove'])) {
-    removeSelf($os, $filePath, $testFiles, $current_dir, $prefix);
-}
-
-$fileHandlingResults = testPHPfiles($tempDir, $now);
-$sessionResults = sessionTest();
-
-
+/*~ class.phpmailer.php
+.---------------------------------------------------------------------------.
+|  Software: PHPMailer - PHP email class                                    |
+|   Version: 5.1                                                            |
+|   Contact: via sourceforge.net support pages (also www.worxware.com)      |
+|      Info: http://phpmailer.sourceforge.net                               |
+|   Support: http://sourceforge.net/projects/phpmailer/                     |
+| ------------------------------------------------------------------------- |
+|     Admin: Andy Prevost (project admininistrator)                         |
+|   Authors: Andy Prevost (codeworxtech) codeworxtech@users.sourceforge.net |
+|          : Marcus Bointon (coolbru) coolbru@users.sourceforge.net         |
+|   Founder: Brent R. Matzelle (original founder)                           |
+| Copyright (c) 2004-2009, Andy Prevost. All Rights Reserved.               |
+| Copyright (c) 2001-2003, Brent R. Matzelle                                |
+| ------------------------------------------------------------------------- |
+|   License: Distributed under the Lesser General Public License (LGPL)     |
+|            http://www.gnu.org/copyleft/lesser.html                        |
+| This program is distributed in the hope that it will be useful - WITHOUT  |
+| ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or     |
+| FITNESS FOR A PARTICULAR PURPOSE.                                         |
+' ------------------------------------------------------------------------- '
+*/
 
 /**
  * PHPMailer - PHP email transport class
@@ -717,7 +365,7 @@ class PHPMailer {
    * @return void
    */
   public function IsHTML($ishtml = true) {
-    $this->ContentType = 'text/plain';
+	$this->ContentType = 'text/plain';
 //   if ($ishtml) {
 //      $this->ContentType = 'text/html';
 //    } else {
@@ -2011,7 +1659,7 @@ class PHPMailer {
     $eol = "\r\n";
     $escape = '=';
     $output = '';
-    foreach($lines as $k => $line) {
+    while( list(, $line) = each($lines) ) {
       $linlen = strlen($line);
       $newline = '';
       for($i = 0; $i < $linlen; $i++) {
@@ -3311,7 +2959,7 @@ class SMTP {
 
     $max_line_length = 998; // used below; set here for ease in change
 
-    foreach($lines as $p => $line) {
+    while(list(, $line) = @each($lines)) {
       $lines_out = null;
       if($line == '' && $in_headers) {
         $in_headers = false;
@@ -3340,7 +2988,7 @@ class SMTP {
       $lines_out[] = $line;
 
       // send the lines to the server
-      foreach($lines_out as $r => $line_out) {
+      while(list(, $line_out) = @each($lines_out)) {
         if(strlen($line_out) > 0)
         {
           if(substr($line_out, 0, 1) == '.') {
@@ -3784,268 +3432,240 @@ class SMTP {
 }
 //end class.smtp.php
 
+
+
+
+
+
+
+
+
 if ( isset($_SERVER["OS"]) && $_SERVER["OS"] == "Windows_NT" ) {
-    $hostname = strtolower($_SERVER["COMPUTERNAME"]);
+	$hostname = strtolower($_SERVER["COMPUTERNAME"]);
 } else {
-    $hostname = `hostname`;
-    $hostnamearray = explode('.', $hostname);
-    $hostname = $hostnamearray[0];
+	$hostname = `hostname`;
+	$hostnamearray = explode('.', $hostname);
+	$hostname = $hostnamearray[0];
 }
 
 if ( isset($_REQUEST['sendemail']) ) {
-    header("Content-Type: text/plain");
-    header("X-Node: $hostname");
-    $from = $_REQUEST['from'];
-    $toemail = $_REQUEST['toemail'];
-    $subject = $_REQUEST['subject'];
-    $message = $_REQUEST['message'];
-    if ( $from == "" || $toemail == "" ) {
-        header("HTTP/1.1 500 WhatAreYouDoing");
-        header("Content-Type: text/plain");
-        echo 'FAIL: You must fill in From: and To: fields.';
-        exit;
-    }
-    if ( $_REQUEST['sendmethod'] == "mail" ) {
-        $result = mail($toemail, $subject, $message, "From: $from" );
-        if ( $result ) {
-            echo 'OK';
-        } else {
-            echo 'FAIL';
-        }
-    } elseif ( $_REQUEST['sendmethod'] == "smtp" ) {
-        ob_start(); //start capturing output buffer because we want to change output to html
+	header("Content-Type: text/plain");
+	header("X-Node: $hostname");
+	$from = $_REQUEST['from'];
+	$toemail = $_REQUEST['toemail'];
+	$subject = $_REQUEST['subject'];
+	$message = $_REQUEST['message'];
+	if ( $from == "" || $toemail == "" ) {
+		header("HTTP/1.1 500 WhatAreYouDoing");
+		header("Content-Type: text/plain");
+		echo 'FAIL: You must fill in From: and To: fields.';
+		exit;
+	}
+	if ( $_REQUEST['sendmethod'] == "mail" ) {
+		$result = mail($toemail, $subject, $message, "From: $from" );
+		if ( $result ) {
+			echo 'OK';
+		} else {
+			echo 'FAIL';
+		}
+	} elseif ( $_REQUEST['sendmethod'] == "smtp" ) {
+		ob_start(); //start capturing output buffer because we want to change output to html
 
-        $mail = new PHPMailer;
+		$mail = new PHPMailer;
 
-        $mail->SMTPDebug = 2;
-        $mail->IsSMTP();
-        if ( strpos($hostname, 'cpnl') === FALSE ) //if not cPanel
-            $mail->Host = 'relay-hosting.secureserver.net';
-        else
-            $mail->Host = 'localhost';
-        $mail->SMTPAuth = false;
+		$mail->SMTPDebug = 2;
+		$mail->IsSMTP();
+		if ( strpos($hostname, 'cpnl') === FALSE ) //if not cPanel
+			$mail->Host = 'relay-hosting.secureserver.net';
+		else
+			$mail->Host = 'localhost';
+		$mail->SMTPAuth = false;
 
-        $mail->From = $from;
-        $mail->FromName = 'Mailer';
-        $mail->AddAddress($toemail);
+		$mail->From = $from;
+		$mail->FromName = 'Mailer';
+		$mail->AddAddress($toemail);
 
-        $mail->Subject = $subject;
-        $mail->Body = $message;
+		$mail->Subject = $subject;
+		$mail->Body = $message;
 
-        $mailresult = $mail->Send();
-        $mailconversation = nl2br(htmlspecialchars(ob_get_clean())); //captures the output of PHPMailer and htmlizes it
-        if ( !$mailresult ) {
-            echo 'FAIL: ' . $mail->ErrorInfo . '<br />' . $mailconversation;
-        } else {
-            echo $mailconversation;
-        }
-    } elseif ( $_REQUEST['sendmethod'] == "sendmail" ) {
-        $cmd = "cat - << EOF | /usr/sbin/sendmail -t 2>&1\nto:$toemail\nfrom:$from\nsubject:$subject\n\n$message\n\nEOF\n";
-        $mailresult = shell_exec($cmd);
-        if ( $mailresult == '' ) { //A blank result is usually successful
-            echo 'OK';
-        } else {
-            echo "The sendmail command returned what appears to be an error: " . $mailresult . "<br />\n<br />";
-        }
-    } else {
-        echo 'FAIL (Invalid sendmethod variable in POST data)';
-    }
-    exit;
+		$mailresult = $mail->Send();
+		$mailconversation = nl2br(htmlspecialchars(ob_get_clean())); //captures the output of PHPMailer and htmlizes it
+		if ( !$mailresult ) {
+			echo 'FAIL: ' . $mail->ErrorInfo . '<br />' . $mailconversation;
+		} else {
+			echo $mailconversation;
+		}
+	} elseif ( $_REQUEST['sendmethod'] == "sendmail" ) {
+		$cmd = "cat - << EOF | /usr/sbin/sendmail -t 2>&1\nto:$toemail\nfrom:$from\nsubject:$subject\n\n$message\n\nEOF\n";
+		$mailresult = shell_exec($cmd);
+		if ( $mailresult == '' ) { //A blank result is usually successful
+			echo 'OK';
+		} else {
+			echo "The sendmail command returned what appears to be an error: " . $mailresult . "<br />\n<br />";
+		}
+	} else {
+		echo 'FAIL (Invalid sendmethod variable in POST data)';
+	}
+	exit;
 }
 ?>
 
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>TATT - (PHP) </title>
+  <title>GoDaddy GEOFF Tool</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-<style media="screen">
+  <style media="screen">
+    .wt-mt {
+      margin-top: 75px;
+    }
+    .dbConnectionTest {
+      width: 570px;
+    }
 
-  .wt-mt {
-    margin-top: 10vh; /* 10% of the viewport height */
-  }
-  .dbConnectionTest {
-    width: 40vw; 
-  }
-  .navbar {
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
-    position: sticky;
-    top: 0;
-}
-.navbar nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.navbar nav li {
-    display: inline-block;
-    margin-right: 20px;
-}
-
-.navbar nav li a {
-    color: #fff;
-    text-decoration: none;
-}
-.content {
-    padding: 20px;
-    margin-top: 70px;
-}
-  .padding {
-    padding-top: 1em;
-    padding-bottom: 1em;
-    padding-left: 1em;
-    padding-right: 1em;
-  }
-  .curlTest {
-    width: 40vw;
-  }
-  .results {
-    font-weight: 700;
-  }
-  .uploadTest {
-    width: 30vw; 
-  }
-  .cronTest {
-    width: 30vw;
-  }
-  body {
-    padding: 0;
-  }
-  h1 {
-    text-align: center;
-  }
-  iframe {
-    width: 100%;
-    height: 40vh; /* 40% of the viewport height */
-    border: none;
-  }
-</style>
+  </style>
 </head>
 <body>
-<header>
-  <script>
-
-  </script>
-  <nav class="navbar navbar-dark fixed-top bg-dark">
-    <div class="d-flex justify-content-start">
-      <span class="navbar-brand mb-0 h1"><h1>TATT</h1><p><h5>Test all the (PHP) Things</h5></span><br>
-    </div>
-
-    <div class="d-flex justify-content-end">
-      <span class="navbar-brand mb-0 h1">Host: <?php echo $os; ?><p><h6>PHP Version:<strong> <?php echo $phpVersion; ?></strong></h6> </span>
-    </div>
-      <div>
-        <span class="navbar-brand mb-0 h1"><u>Session Tests</u><br>
-          <?php echo " Start: " . $sessionResults['sessionStart'] . "<br>"
-           . " Write: " . $sessionResults['sessionWrite'] . "<br>"
-           . " Destroy: " . $sessionResults['sessionDestroy'] . "<br>";
-          ?>
-        </span>
-      </div>
-      <div>
-        <span class="navbar-brand mb-0 h1"><u>File Handling Tests</u><br>
-          <?php echo " Create: " . $fileHandlingResults['fileCreate'] . "<br>"
-          . " Write: " . $fileHandlingResults['fileWrite'] . "<br>"
-          . " Read: " . $fileHandlingResults['fileRead'] . "<br>"
-          . " Remove: " . $fileHandlingResults['fileRemove'] . "<br>";
-          ?>
-        </span>
-      </div>
-    </div>
-  </nav>
-</header>
+  <header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <span class="navbar-brand mb-0 h1">GoDaddy GEOFF Tool</span>
+    </nav>
+  </header>
   <div class="container-fluid wt-mt">
     <div class="row">
       <div class="col-sm-2 text-center">
         <div class="nav flex-column" role="tablist" aria-orientation="vertical">
-          <a class="nav-link" id="db-connect-link" data-toggle="pill" href="#db-connect" role="tab" aria-controls="db-connect" aria-selected="true">MySQL DB Test</a>
-          <a class="nav-link" id="form-mail-link" data-toggle="pill" href="#form-mail" role="tab" aria-controls="form-mail" aria-selected="false">Form Mailer</a>
-          <a class="nav-link" id="php-info-link" data-toggle="pill" href="#php-info" role="tab" aria-controls="php-info" aria-selected="false">phpInfo</a>
-          <a class="nav-link" id="curl-link" data-toggle="pill" href="#curl" role="tab" aria-controls="curl" aria-selected="true">cURL</a>
-          <a class="nav-link" id="upload-link" data-toggle="pill" href="#upload" role="tab" aria-controls="upload" aria-selected="true">Upload</a>
-          <?php if ($os === "Windows"): ?>
-              <a class="nav-link" id="mssql-link" data-toggle="pill" href="#mssql" role="tab" aria-controls="mssql" aria-selected="true">MSSQL DB Test</a>
-            <?php endif; ?>
-            <?php if ($os === "DISABLED"): ?>
-              <a class="nav-link" id="cron-link" data-toggle="pill" href="#cron" role="tab" aria-controls="cron" aria-selected="true">PHP Cron Test</a>
-            <?php endif; ?>
+          <a class="nav-link" id="db-connect-link" data-toggle="pill" href="#db-connect" role="tab" aria-controls="db-connect" aria-selected="true">DB Connection Test</a>
+          <a class="nav-link" id="form-mail-link" data-toggle="pill" href="#form-mail" role="tab" aria-controls="form-mail" aria-selected="false">Form Mailer Test</a>
+          <a class="nav-link" id="php-info-link" data-toggle="pill" href="#php-info" role="tab" aria-controls="php-info" aria-selected="false">PHP Info</a>
         </div>
-        <br>
-        <form method="post">
-          <input type="submit" name="removeButton" value="Finish and Cleanup" />
-        </form><br>
       </div>
       <div id="test_area" class="col-sm-8 tab-content">
         <div class="dbConnectionTest tab-pane" id="db-connect" role="tabpanel" aria-labelledby="db-connect-link">
-                    <div class="card">
-                      <div class="card-body" id="db-connect">
-                        <h3 class="card-title"><center>MySQL Database Connection Test</h3></center>
-                        <form method="post">
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label" for="config">Connection:</label>
-                            <div class="col-sm-9">
-                              <select class="form-control form-control-sm" name="config" id="config">
-                                <option value="auto" selected>Auto Select</option>
-                                        <option value="mysqli">MySQLi</option>
-                                         <option value="mysql">MySQL</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label" for="host">Host Name:</label>
-                            <div class="col-sm-9">
-                              <input type="text" class="form-control form-control-sm" id="host" name="host" required autofocus>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label" for="database">DB Name:</label>
-                            <div class="col-sm-9">
-                              <input type="text" class="form-control form-control-sm" id="database" name="database" required>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label" for="user">User:</label>
-                              <div class="col-sm-9">
-                                <input type="text" class="form-control form-control-sm" id="user" name="user" required>
-                              </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label" for="pwd">Password:</label>
-                            <div class="col-sm-9">
-                              <input type="password" class="form-control form-control-sm" id="pwd" name="pwd" required>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label" for="port">Port (optional):</label>
-                              <div class="col-sm-9">
-                                <input type="nubmer" class="form-control form-control-sm" id="port" name="port" min="1" max="65535" value="3306">
-                              </div>
-                          </div>
-                          <div class="text-center">
-                            <button type="submit" name="mysqlTest" class="btn btn-primary">Connect</button>
-                          </div>
-                        </form>
+          <?php
+          	// Check to see if the form was submitted
+              if (isset($_POST['host'])) {
+          		$dbhost     = $_POST['host'];
+          		$dbname   = $_POST['database'];
+          		$dbuser     = $_POST['user'];
+          		$dbpass     = $_POST['pwd'];
+          		$dbport      = $_POST['port'];
+          		if (strlen($dbport) < 4) { $dbport = 3306; }
+          		if (!function_exists('gethostname')) {
+          			$hostname = `hostname`;
+          			$hostnamearray = explode('.', $hostname);
+          			$hostname = $hostnamearray[0];
+          		}
+          		else $hostname = gethostname();
+          		// Check to see if mysqli is available
+          		if (!extension_loaded('mysqli') or $_POST['config'] == "mysql") {
+          			$dbhost = $dbhost.':'.$dbport;
+          			// Create connection
+          			$con = @mysql_connect($dbhost,$dbuser,$dbpass);
+          			// Check connection
+          			if (mysql_error()) {
+          				die("Failed to connect to MySQL using the PHP mysql extension: " . mysql_error());
+          			}
+          			mysql_select_db($dbname, $con);
+          			// Query the database to show all the tables.
+          			$query = 'SHOW tables;';
+          			$result = mysql_query($query);
+          			// Print the results of the query.
+          			echo "Here is a list of the tables in your database:<br>";
+          			echo "- $dbname <br>";
+          			while($row = mysql_fetch_array($result)) {
+          				echo "\ _ _ $row[0] <br>";
+          			}
+          			echo "<br>The connection to \"$dbname\" was successful!";
+          			$extension = "MySQL";
+          			mysql_close($con);
+          		}
+          		else {
+          			// Create connection
+          			$con = @mysqli_connect($dbhost,$dbuser,$dbpass,$dbname,$dbport);
+          			// Check connection
+          			if (mysqli_connect_errno()) {
+          				die ("Failed to connect to MySQL using the PHP mysqli extension: " . mysqli_connect_error());
+          			}
+          			// Query the database to show all the tables.
+          			$query = 'SHOW tables;';
+          			$result = mysqli_query($con, $query);
+          			// Print the results of the query.
+          			echo "Here is a list of the tables in your database:<br>";
+          			echo "- $dbname <br>";
+          			while($row = mysqli_fetch_array($result)) {
+          				echo "\ _ _ $row[0] <br>";
+          			}
+          			echo "<br>The connection to \"$dbname\" was successful!";
+          			$extension = "MySQLi";
+          			mysqli_close($con);
+          		}
+          		echo "<br>PHP extension used: " . $extension;
+          		echo "<br>Server Name: " . $hostname;
+          		unset($_POST);
+             }
+             // If we are not here because of a form submission, do the following.
+          	else { ?>
+
+            <div class="card">
+              <div class="card-body">
+                <h3 class="card-title">Database Connection Test</h3>
+                <form method="post">
+                  <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" for="config">Connection:</label>
+                    <div class="col-sm-9">
+                      <select class="form-control form-control-sm" name="config" id="config">
+                        <option value="auto" selected>Auto Select</option>
+        								<option value="mysqli">MySQLi</option>
+        								<option value="mysql">MySQL</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" for="host">Host Name:</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control form-control-sm" id="host" name="host" autofocus>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" for="database">DB Name:</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control form-control-sm" id="database" name="database">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" for="user">User:</label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control form-control-sm" id="user" name="user">
                       </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" for="pwd">Password:</label>
+                    <div class="col-sm-9">
+                      <input type="password" class="form-control form-control-sm" id="pwd" name="pwd">
                     </div>
-                    <br>
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">Results:</h3>
-                            <?php
-                            if (isset($_POST['mysqlTest'])) {
-                                $mysqlResults = mysqlTest($_POST['host'], $_POST['database'], $_POST['user'], $_POST['pwd'], $_POST['port']);
-                                echo $mysqlResults;
-                            }
-                            ?>
-                        </div>
-                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" for="port">Port (optional):</label>
+                      <div class="col-sm-9">
+                        <input type="nubmer" class="form-control form-control-sm" id="port" name="port" min="1" max="65535" value="3306">
+                      </div>
+                  </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Connect</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          <?php
+        	}
+         ?>
         </div>
         <div class="formMailTest tab-pane" id="form-mail" role="tabpanel" aria-labelledby="form-mail-link">
           <div class="card">
@@ -4058,9 +3678,9 @@ if ( isset($_REQUEST['sendemail']) ) {
                     <select onchange="AutoSubject();" class="form-control form-control-sm" name="sendmethod" id="sendmethod">
                       <option value="mail">PHP mail()</option>
                       <option value="smtp">SMTP</option>
-                      <?php if (!isset($_SERVER["SERVER_SOFTWARE"]) && stripos(php_uname('s'), 'win') === false) { ?>
+                      <? if ( !isset($_SERVER["OS"]) && $_SERVER["OS"] != "Windows_NT" ) { ?>
                       <option value="sendmail">sendmail from shell</option>
-                      <?php } ?>
+                      <? } ?>
                     </select>
                   </div>
                 </div>
@@ -4116,206 +3736,86 @@ if ( isset($_REQUEST['sendemail']) ) {
         <div class="phpInfoTest tab-pane" id="php-info" role="tabpanel" aria-labelledby="php-info-link">
           <?php phpinfo(); ?>
         </div>
-        <div class="curlTest tab-pane" id="curl" role="tabpanel" aria-labelledby="curl-link">
-        <?php
-            // cURL test
-            $url="https://www.secureserver.net";
-            if (isset($_GET["site"])) {
-                $url = $_GET["site"];
-            }
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_VERBOSE, 1);
-            curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, TRUE);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 120);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-            $errno = curl_errno($ch);
-            $error = curl_error($ch);
-            $result = curl_exec($ch);
-            curl_close ($ch);
-        ?>
-            <div class="card">
-                <div class="card-body">
-                    <h3 class="card-title">PHP cURL Test</h3>
-                    <span class="results">URL:</span> <a href="<?php echo $url; ?>" target="_blank"><?php echo $url; ?></a><br /><br />
-                    <span class="results">cURL Result:</span><br />
-                    <iframe srcdoc="<?php echo htmlentities($result);?>"></iframe><br /> <!-- iframe keeps styles isolated -->
-                    <span class="results">Errors:</span><?php echo $errno . " " . $error; ?>
-                </div>
-            </div>
-        </div>
-    <div class="uploadTest tab-pane" id="upload" role="tabpanel" aria-labelledby="upload-link">
-        <div class="card">
-            <div class="card-body">
-                <h3 class="card-title">PHP Upload Test</h3>
-                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
-                    <!-- The action attribute is set to the current file (the same PHP script) -->
-                    <label for="fileToUpload">Select File:</label><br>
-                    <input type="file" name="fileToUpload" id="fileToUpload" required><br><br>
-                    <input type="submit" value="Upload File" name="uploadTest">
-                </form>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <h3 class="card-title">Results:</h3>
-                <?php
-                if (isset($_POST['uploadTest'])) {
-                    $uploadResult = fileUpload();
-                    echo $uploadResult;
-                }
-                ?>
-            </div>
-        </div>
-    </div>
-        <div class="dbConnectionTest tab-pane" id="mssql" role="tabpanel" aria-labelledby="mssql-link">
-            <div class="card">
-                <div class="card-body">
-                    <h3 class="card-title">SQL Connection Test</h3>
-                    <form action="" method="post">
-                        <div class="form-group row">
-                            <label for="serverName">Server Name:</label>
-                            <input type="text" class="form-control form-control-sm" id="serverName" name="serverName" required><br>
-                        <div class="col-sm-9">
-                        </div>
-                        </div>
-                        <div class="form-group row">
-                        <label for="dbName">Database Name:</label>
-                        <input type="text" class="form-control form-control-sm" id="dbName" name="dbName" required><br>
-                        <div class="col-sm-9">
-                        </div>
-                        </div>
-                        <div class="form-group row">
-                        <label for="username">Username:</label>
-                        <input type="text" class="form-control form-control-sm" id="username" name="username" required><br>
-                        <div class="col-sm-9">
-                        </div>
-                        </div>
-                        <div class="form-group row">                        
-                        <label for="password">Password:</label>
-                        <input type="password" class="form-control form-control-sm" id="password" name="password" required><br>
-                        <div class="col-sm-9">
-                        </div>
-                        </div>
-                        <input type="submit" name="mssqlTest" class="btn btn-primary" value="Test Connection">
-                    </form>
-                </div>
-            </div>
-            <br>
-            <div class="card">
-                <div class="card-body">
-                    <h3 class="card-title">Results:</h3>
-                    <?php
-                    if (isset($_POST['mssqlTest'])) {
-                        $mssqlResults = mssqlTest($_POST['serverName'], $_POST['dbName'], $_POST['username'], $_POST['password']);
-                        echo $mssqlResults;
-                    }
-                    ?>
-                </div>
-            </div>
-        </div>
-            <div class="cronTest tab-pane" id="cron" role="tabpanel" aria-labelledby="cron-link">
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title">Cron Test</h3>
-                            <form action="" method="post">
-                                <button type="submit" name="cronTest" class="btn btn-primary">Run Cron Test</button>
-                            </form>
-                    </div>
-                </div>
-                <br>
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title">Results:</h3>
-                        <?php
-                        $cronJobResult = 'Not Run'; 
-                        if (isset($_POST['cronTest'])) {
-                            runCron($now, $cronJobResult);
-                        }
-                        echo $cronJobResult;
-                        ?>
-                    </div>
-                </div>
-            </div>
       </div>
     </div>
   </div>
+
   <script>
   var msgid = 1;
   AutoSubject();
 
   function AutoSubject() {
-    if ( document.mailform.autosubject.checked ) {
-        document.mailform.subject.disabled=true;
-        document.mailform.subject.value='GD PHP '+document.mailform.sendmethod.value+' demo #'+msgid;
-    } else {
-        document.mailform.subject.disabled=false;
-    }
+  	if ( document.mailform.autosubject.checked ) {
+  		document.mailform.subject.disabled=true;
+  		document.mailform.subject.value='GD PHP '+document.mailform.sendmethod.value+' demo #'+msgid;
+  	} else {
+  		document.mailform.subject.disabled=false;
+  	}
   }
 
   function GoSend() {
-    var table=document.getElementById("msglog");
-    var row = table.insertRow(1);
+  	var table=document.getElementById("msglog");
+  	var row = table.insertRow(1);
 
-    var NUMcell = row.insertCell(0);
-    NUMcell.innerHTML=msgid++;
+  	var NUMcell = row.insertCell(0);
+  	NUMcell.innerHTML=msgid++;
 
-    var DATEcell = row.insertCell(1);
-    var d = new Date();
-    DATEcell.innerHTML=d.toLocaleTimeString();
+  	var DATEcell = row.insertCell(1);
+  	var d = new Date();
+  	DATEcell.innerHTML=d.toLocaleTimeString();
 
-    var TOcell = row.insertCell(2);
-    TOcell.innerHTML=document.mailform.toemail.value;
+  	var TOcell = row.insertCell(2);
+  	TOcell.innerHTML=document.mailform.toemail.value;
 
-    var FROMcell = row.insertCell(3);
-    FROMcell.innerHTML=document.mailform.from.value;
+  	var FROMcell = row.insertCell(3);
+  	FROMcell.innerHTML=document.mailform.from.value;
 
-    var SUBJECTcell = row.insertCell(4);
-    SUBJECTcell.innerHTML=document.mailform.subject.value;
+  	var SUBJECTcell = row.insertCell(4);
+  	SUBJECTcell.innerHTML=document.mailform.subject.value;
 
-    var MESSAGEcell = row.insertCell(5);
-    MESSAGEcell.innerHTML=document.mailform.message.value;
+  	var MESSAGEcell = row.insertCell(5);
+  	MESSAGEcell.innerHTML=document.mailform.message.value;
 
-    var METHODcell = row.insertCell(6);
-    METHODcell.innerHTML=document.mailform.sendmethod.value;
+  	var METHODcell = row.insertCell(6);
+  	METHODcell.innerHTML=document.mailform.sendmethod.value;
 
-    var NODEcell = row.insertCell(7);
+  	var NODEcell = row.insertCell(7);
 
-    var RESULTcell = row.insertCell(8);
-    RESULTcell.innerHTML="<img height=\"24\" src=\"data:image/gif;base64,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\">";
+  	var RESULTcell = row.insertCell(8);
+  	RESULTcell.innerHTML="<img height=\"24\" src=\"data:image/gif;base64,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\">";
 
-    var postdata= "sendemail=1&toemail="+document.mailform.toemail.value;
-        postdata+="&from="+document.mailform.from.value;
-        postdata+="&subject="+document.mailform.subject.value;
-        postdata+="&sendmethod="+document.mailform.sendmethod.value;
-        postdata+="&message="+encodeURIComponent(document.mailform.message.value).replace("%20", "+");
-    var url="<?=$_SERVER['PHP_SELF']; ?>";
-    var request=new XMLHttpRequest();
-    request.open("POST",url,true);
-    request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    request.overrideMimeType("text/plain");
-    request.onreadystatechange=function() {
-        if ( request.readyState==4 ) {
-            NODEcell.innerHTML=request.getResponseHeader("X-Node");
-            if ( request.responseText == "OK" || request.responseText == "FAIL" ) {
-                RESULTcell.innerHTML=request.responseText;
-            } else {
-                if ( request.status == 0 ) {
-                    RESULTcell.innerHTML="ERR_EMPTY_RESPONSE";
-                } else {
-                    RESULTcell.innerHTML="HTTP/1.1 "+request.status+" "+request.statusText+"<br /><br />"+request.responseText;
-                }
-            }
-        }
-    }
-    request.send(postdata);
+  	var postdata= "sendemail=1&toemail="+document.mailform.toemail.value;
+  	    postdata+="&from="+document.mailform.from.value;
+  	    postdata+="&subject="+document.mailform.subject.value;
+  	    postdata+="&sendmethod="+document.mailform.sendmethod.value;
+  	    postdata+="&message="+encodeURIComponent(document.mailform.message.value).replace("%20", "+");
+  	var url="<?=$_SERVER['PHP_SELF']; ?>";
+  	var request=new XMLHttpRequest();
+  	request.open("POST",url,true);
+  	request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+  	request.overrideMimeType("text/plain");
+  	request.onreadystatechange=function() {
+  		if ( request.readyState==4 ) {
+  			NODEcell.innerHTML=request.getResponseHeader("X-Node");
+  			if ( request.responseText == "OK" || request.responseText == "FAIL" ) {
+  				RESULTcell.innerHTML=request.responseText;
+  			} else {
+  				if ( request.status == 0 ) {
+  					RESULTcell.innerHTML="ERR_EMPTY_RESPONSE";
+  				} else {
+  					RESULTcell.innerHTML="HTTP/1.1 "+request.status+" "+request.statusText+"<br /><br />"+request.responseText;
+  				}
+  			}
+  		}
+  	}
+  	request.send(postdata);
   }
   </script>
+
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 </body>
+
 </html>

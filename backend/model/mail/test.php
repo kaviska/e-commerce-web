@@ -1,10 +1,10 @@
 <?php
-require_once "PHPMailer.php";
+// Include PHPMailer
 require_once "SMTP.php";
+require_once "PHPMailer.php";
 require_once "Exception.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 
 class EmailSender
 {
@@ -12,35 +12,46 @@ class EmailSender
 
     public function __construct()
     {
+        // Create a new PHPMailer instance
         $this->mail = new PHPMailer(true);
 
+        // SMTP configuration
         $this->mail->isSMTP();
-        $this->mail->Host = 'smtp.titan.email';
-        $this->mail->SMTPAuth = true;
-        $this->mail->Username = 'parking@yourmeetandgreetservice.co.uk';
-        $this->mail->Password = 'b00x123#!';
-        $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $this->mail->Host = 'smtp.gmail.com';
         $this->mail->Port = 587;
+        $this->mail->SMTPAuth = true;
+        $this->mail->Username = 'info.iymart@gmail.com';
+        $this->mail->Password = 'ladiaffuinspyzyu';
+        $this->mail->SMTPSecure = 'tls';
 
-        $this->mail->SMTPDebug = 2;
-        $this->mail->Debugoutput = 'html';
+        // $this->mail->isSMTP();
+        // $this->mail->Host = 'smtp.titan.email'; //
+        // $this->mail->SMTPAuth = false;
+        // $this->mail->Username = 'info.iymart@gmail.com'; //
+        // $this->mail->Password = 'b00x123#!'; //
+        // $this->mail->SMTPSecure = 'None';
+        // $this->mail->Port = 25;
     }
 
-    public function sendEmail($recipient, $subject, $body)
+    public function sendEmail($recipient, $subject, $body, $senderName = 'Meet & Greet Service')
     {
         try {
-            $this->mail->setFrom('parking@yourmeetandgreetservice.co.uk', 'Meet & Greet Service');
+            // Sender and recipient
+            $this->mail->setFrom('info.iymart@gmail.com', $senderName);
             $this->mail->addAddress($recipient);
 
+            // Email content
             $this->mail->isHTML(true);
             $this->mail->Subject = $subject;
             $this->mail->Body = $body;
 
+            // Send the email
             $this->mail->send();
-            echo "✅ Email sent successfully!";
+            return true; // Email sent successfully
         } catch (Exception $e) {
-            echo "❌ Email failed: " . $this->mail->ErrorInfo;
+            return false; // Failed to send email
         }
     }
 }
 
+// Example usage:

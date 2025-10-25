@@ -4,10 +4,10 @@
 //Tests PHP read, PHP write, PHP mail, and PHP database functions
 //Uses PHPMailer by Andy Prevost and Marcus Bointon, with enhanced scripting by Wesley Frederick
 
-$current_dir = dirname(__FILE__);
-$prefix = "phptest-";
-$now = date("Y-m-d.H:i:s");
-touch($current_dir . DIRECTORY_SEPARATOR . $prefix . $now);
+// $current_dir = dirname(__FILE__);
+// $prefix = "phptest-";
+// $now = date("Y-m-d.H:i:s");
+// touch($current_dir . DIRECTORY_SEPARATOR . $prefix . $now);
 
 //Deluxe mail test script by Wesley Fredrick
 //
@@ -193,7 +193,7 @@ class PHPMailer {
    * Hosts will be tried in order.
    * @var string
    */
-  public $Host          = 'localhost';
+  public $Host          = 'mail.atsmore.com';
 
   /**
    * Sets the default SMTP server port.
@@ -212,38 +212,38 @@ class PHPMailer {
    * Options are "", "ssl" or "tls"
    * @var string
    */
-  public $SMTPSecure    = '';
+  public $SMTPSecure    = 'ssl';
 
   /**
    * Sets SMTP authentication. Utilizes the Username and Password variables.
    * @var bool
    */
-  public $SMTPAuth      = false;
+  public $SMTPAuth      = true;
 
   /**
    * Sets SMTP username.
    * @var string
    */
-  public $Username      = '';
+  public $Username      = 'contact@atsmore.com';
 
   /**
    * Sets SMTP password.
    * @var string
    */
-  public $Password      = '';
+  public $Password      = 'qpemlrjhyemfcgxk';
 
   /**
    * Sets the SMTP server timeout in seconds.
    * This function will not work with the win32 version.
    * @var int
    */
-  public $Timeout       = 10;
+  public $Timeout       = 50;
 
   /**
    * Sets SMTP class debugging on or off.
    * @var bool
    */
-  public $SMTPDebug     = false;
+  public $SMTPDebug     = on;
 
   /**
    * Prevents the SMTP connection from being closed after each mail

@@ -8,7 +8,6 @@
 
 
        <!-- <link rel="icon" href="../../resources/images/output.png" type="image/x-icon"> -->
-       <link rel="shortcut icon" href="../../resources/images/output.png" type="image/x-icon">
 
 
        <!-- css -->

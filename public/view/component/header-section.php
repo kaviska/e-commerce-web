@@ -7,166 +7,105 @@ if ($access->isLoggedIn()) {
 }
 ?>
 
-
-<nav class="navbar navbar-expand-lg navbar-light  p-3">
-       <div class="container-fluid">
-              <a href="./home">
-                   logo
-
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+       <div class="container">
+              <a href="./home" class="navbar-brand d-flex align-items-center">
+                     <i class="bi bi-shop-window text-primary me-2" style="font-size: 28px;"></i>
+                     <span class="fw-bold text-primary md:block d-none" style="font-size: 22px;">Our Store</span>
               </a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+              
+              <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                      <span class="navbar-toggler-icon"></span>
               </button>
 
-              <div class=" collapse navbar-collapse" id="navbarNavDropdown">
-                     <ul class="navbar-nav ms-auto ">
-                            <li class="nav-item alg-text-yellow">
-                                   <a class="nav-link  alg-text-yellow alg-bolder mx-2 alg-text-yellow alg-bolder" href="./">Home</a>
-                            </li>
-
-                            <li class="nav-item alg-text-yellow">
-                                   <a class="nav-link  alg-text-yellow alg-bolder mx-2 alg-text-yellow alg-bolder">About Us</a>
+              <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                     <ul class="navbar-nav ms-auto align-items-lg-center">
+                            <li class="nav-item">
+                                   <a class="nav-link fw-semibold px-3 nav-link-custom" href="./">Home</a>
                             </li>
                             <li class="nav-item">
-                                   <a class="nav-link  alg-text-yellow alg-bolder mx-2" >Our Services</a>
+                                   <a class="nav-link fw-semibold px-3 nav-link-custom" href="#about">About Us</a>
                             </li>
                             <li class="nav-item">
-                                   <a class="nav-link  alg-text-yellow alg-bolder mx-2" >FAQ’s</a>
+                                   <a class="nav-link fw-semibold px-3 nav-link-custom" href="#services">Our Services</a>
                             </li>
                             <li class="nav-item">
-                                   <a class="nav-link  alg-text-yellow alg-bolder mx-2">Contact Us</a>
+                                   <a class="nav-link fw-semibold px-3 nav-link-custom" href="#faq">FAQ's</a>
+                            </li>
+                            <li class="nav-item">
+                                   <a class="nav-link fw-semibold px-3 nav-link-custom" href="#contact">Contact Us</a>
                             </li>
 
-
-
-                            <?php
-                            if ($loggedUserData) { ?>
-
-                                   <li class="nav-item d-lg-none d-inline">
-                                          <a class="nav-link  alg-text-yellow alg-bolder mx-2" onclick="redirecUSerProfile()" style="cursor: pointer;">User Profile</a>
+                            <?php if ($loggedUserData) { ?>
+                                   <!-- Mobile User Menu -->
+                                   <li class="nav-item d-lg-none">
+                                          <a class="nav-link fw-semibold px-3 nav-link-custom" onclick="redirecUSerProfile()" style="cursor: pointer;">
+                                                 <i class="bi bi-person-circle me-1"></i> User Profile
+                                          </a>
                                    </li>
-                                   <li class="nav-item  d-lg-none d-inline">
-                                          <a class="nav-link  alg-text-yellow alg-bolder mx-2" href="./OrderTracker" style="cursor: pointer;" style="cursor: pointer;">My Orders</a>
+                                   <li class="nav-item d-lg-none">
+                                          <a class="nav-link fw-semibold px-3 nav-link-custom" href="./OrderTracker">
+                                                 <i class="bi bi-bag-check me-1"></i> My Orders
+                                          </a>
                                    </li>
-
-                                   <li class="nav-item  d-lg-none d-inline">
-                                          <a class="nav-link  alg-text-yellow alg-bolder mx-2" onclick="logOut()" style="cursor: pointer;">Log Out</a>
+                                   <li class="nav-item d-lg-none">
+                                          <a class="nav-link fw-semibold px-3 nav-link-custom text-danger" onclick="logOut()" style="cursor: pointer;">
+                                                 <i class="bi bi-box-arrow-right me-1"></i> Log Out
+                                          </a>
                                    </li>
-                            <?php
-                            } else {
-                            ?>
-                                   <li class="nav-item  d-lg-none d-inline">
-                                          <a class="nav-link  alg-text-yellow alg-bolder mx-2 " id="signinBtn" style="cursor: pointer;">Sign Up/Sign In</a>
+                            <?php } else { ?>
+                                   <!-- Mobile Sign In -->
+                                   <li class="nav-item d-lg-none">
+                                          <a class="nav-link fw-semibold px-3 nav-link-custom" id="signinBtn" style="cursor: pointer;">
+                                                 <i class="bi bi-person-circle me-1"></i> Sign Up/Sign In
+                                          </a>
                                    </li>
-
-                                   <!-- <button class="booking-btn alg-bg-yellow alg-text-p mt-sm-0 mt-0 ">
-                                          <div class="d-flex align-items-center justify-content-center">
-
-                                                 <span class="d-sm-block d-none text-white alg-text-h3">My Booking</span>
-                                          </div>
-
-                                   </button> -->
-
                             <?php } ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                      </ul>
-                     <ul class="navbar-nav ms-auto d-none d-lg-inline-flex">
-                            <li class="nav-item mx-2">
-                                   <?php
-                                   if ($loggedUserData) { ?>
 
-
-                                          <button class="btn alg-text-p profie-btn  mt-md-0 mt-sm-2 mb-sm-0 mb-3" onclick="redirecUSerProfile()">
-                                                 <div class="d-flex align-items-center justify-content-center">
-                                                        <i class="bi bi-person  alg-text-yellow mx-1 d-md-none"></i>
-                                                        <span class="d-md-block d-none ">
-                                                               User Profile
-                                                        </span>
-
-                                                 </div>
-
+                     <!-- Desktop Action Buttons -->
+                     <ul class="navbar-nav ms-3 d-none d-lg-flex align-items-center">
+                            <?php if ($loggedUserData) { ?>
+                                   <li class="nav-item me-2">
+                                          <button class="btn btn-outline-primary btn-sm px-3 py-2" onclick="redirecUSerProfile()">
+                                                 <i class="bi bi-person-circle me-1"></i>
+                                                 <span>Profile</span>
                                           </button>
+                                   </li>
+                                   <li class="nav-item me-2">
                                           <a href="./OrderTracker">
-                                                 <button class="btn alg-text-p booking-btn-sign alg-bg-yellow  mt-md-0 mt-sm-2 mb-sm-0 mb-3">
-                                                        <div class="d-flex align-items-center justify-content-center">
-                                                               <i class="bi bi-archive  text-white mx-1 d-md-none"></i>
-                                                               <span class="d-md-block d-none  text-white">
-                                                                      My Orders
-                                                               </span>
-
-                                                        </div>
-
+                                                 <button class="btn btn-primary btn-sm px-3 py-2">
+                                                        <i class="bi bi-bag-check me-1"></i>
+                                                        <span>My Orders</span>
                                                  </button>
                                           </a>
-
-                                          <button class="btn alg-text-p booking-btn-sign bg-danger  mt-md-0 mt-sm-2 mb-sm-0 mb-3 d-sm-inline d-none" onclick="logOut()">
-                                                 <div class="d-flex align-items-center justify-content-center">
-                                                        <i class="bi bi-box-arrow-left  text-white mx-1 d-md-none"></i>
-                                                        <span class="d-md-block d-none text-white">
-                                                               Log Out
-                                                        </span>
-
-                                                 </div>
-
+                                   </li>
+                                   <li class="nav-item">
+                                          <button class="btn btn-danger btn-sm px-3 py-2" onclick="logOut()">
+                                                 <i class="bi bi-box-arrow-right me-1"></i>
+                                                 <span>Logout</span>
                                           </button>
-                                          
-                                   <?php
-                                   } else {
-                                   ?>
-                                   
-                                          <button class="btn alg-text-p sign-btn sign-btn alg-bg-light  mt-sm-0 mt-0" onclick="aiyo()">
-                                                 <div class="d-flex align-items-center justify-content-center">
-                                                        <i class="bi bi-person d-sm-none alg-text-yellow d-sm-none"></i>
-
-                                                        <span class="d-sm-block d-none">
-                                                               Sign Up/Sign IN
-                                                        </span>
-
-                                                 </div>
-
-
-
+                                   </li>
+                            <?php } else { ?>
+                                   <li class="nav-item me-2">
+                                          <button class="btn btn-primary btn-sm px-4 py-2" onclick="aiyo()">
+                                                 <i class="bi bi-person-plus me-1"></i>
+                                                 <span>Sign Up/Sign In</span>
                                           </button>
-
+                                   </li>
+                                   <li class="nav-item">
                                           <a href="./OrderTracker">
-                                                 <button class="btn alg-text-p booking-btn-sign alg-bg-yellow  mt-md-0 mt-sm-2 mb-sm-0 mb-3">
-                                                        <div class="d-flex align-items-center justify-content-center">
-                                                               <i class="bi bi-archive  text-white mx-1 d-md-none"></i>
-                                                               <span class="d-md-block d-none  text-white">
-                                                                      My Orders
-                                                               </span>
-
-                                                        </div>
-
+                                                 <button class="btn btn-outline-primary btn-sm px-3 py-2">
+                                                        <i class="bi bi-bag-check me-1"></i>
+                                                        <span>Track Order</span>
                                                  </button>
                                           </a>
-
-                                   <?php } ?>
-
+                                   </li>
+                            <?php } ?>
+                     </ul>
               </div>
-              </li>
-
-              </ul>
-       </div>
        </div>
 </nav>
-
-
-
 
 <!-- Modal HTML -->
 <div id="myModal" class="modal fade">
@@ -179,7 +118,6 @@ if ($access->isLoggedIn()) {
                             <h1 class="mt-3 alg-text-h1" id="headerLogin">Member Login</h1>
                             <h1 class="mt-3 alg-text-h1 d-none" id="headerRegister">Member Register</h1>
                             <h1 class="mt-3 alg-text-h1 d-none" id="headerFrogotPassword">Frogot Password</h1>
-
 
                             <span class="close " data-dismiss="modal" aria-hidden="true" id="signInClose" style="cursor: pointer;">
                                    <i class="bi bi-x-circle-fill"></i>
@@ -252,7 +190,130 @@ if ($access->isLoggedIn()) {
        </div>
 </div>
 
-
 <!-- toast massege -->
-
 <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+<style>
+/* Navbar Custom Styles */
+.navbar {
+       padding: 1rem 0;
+       transition: all 0.3s ease;
+}
+
+.navbar-brand {
+       font-size: 24px;
+       transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+       transform: scale(1.05);
+}
+
+.text-primary {
+       color: #667eea !important;
+}
+
+.nav-link-custom {
+       color: #2c3e50;
+       font-size: 15px;
+       position: relative;
+       transition: all 0.3s ease;
+}
+
+.nav-link-custom::after {
+       content: '';
+       position: absolute;
+       bottom: 0;
+       left: 50%;
+       width: 0;
+       height: 2px;
+       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+       transition: all 0.3s ease;
+       transform: translateX(-50%);
+}
+
+.nav-link-custom:hover {
+       color: #667eea;
+}
+
+.nav-link-custom:hover::after {
+       width: 80%;
+}
+
+.btn-primary {
+       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+       border: none;
+       transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+       background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+       transform: translateY(-2px);
+       box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-outline-primary {
+       color: #667eea;
+       border-color: #667eea;
+       transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+       background: #667eea;
+       border-color: #667eea;
+       color: #fff;
+       transform: translateY(-2px);
+       box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-danger {
+       background: linear-gradient(135deg, #FF6B6B 0%, #ee5a6f 100%);
+       border: none;
+       transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+       background: linear-gradient(135deg, #ee5a6f 0%, #FF6B6B 100%);
+       transform: translateY(-2px);
+       box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+}
+
+.navbar .btn {
+       font-size: 14px;
+       font-weight: 600;
+       white-space: nowrap;
+}
+
+.navbar .btn i {
+       font-size: 16px;
+}
+
+/* Mobile Styles */
+@media (max-width: 991px) {
+       .navbar-collapse {
+              background: #fff;
+              padding: 20px;
+              margin-top: 15px;
+              border-radius: 8px;
+              box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+       }
+       
+       .nav-item {
+              margin: 8px 0;
+       }
+       
+       .nav-link-custom {
+              padding: 10px 15px !important;
+              border-radius: 8px;
+              transition: all 0.3s ease;
+       }
+       
+       .nav-link-custom:hover {
+              background: rgba(102, 126, 234, 0.1);
+       }
+       
+       .nav-link-custom::after {
+              display: none;
+       }
+}
+</style>

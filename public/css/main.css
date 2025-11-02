@@ -445,19 +445,3 @@ a {
   }
 }
 
-/* For WebKit based browsers (e.g., Chrome, Safari) */
-::-webkit-scrollbar {
-  width: 10px; /* width of the scrollbar */
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1; /* color of the track */
-}
-
-::-webkit-scrollbar-thumb {
-  background: #0930de; /* color of the thumb */
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--yellow); /* color of the thumb on hover */
-}

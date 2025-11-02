@@ -11,7 +11,7 @@ if ($access->isLoggedIn()) {
        <div class="container">
               <a href="./home" class="navbar-brand d-flex align-items-center">
                      <i class="bi bi-shop-window text-primary me-2" style="font-size: 28px;"></i>
-                     <span class="fw-bold text-primary md:block d-none" style="font-size: 22px;">Our Store</span>
+                     <span class="fw-bold text-primary d-none d-md-block" style="font-size: 22px;">Our Store</span>
               </a>
               
               <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
